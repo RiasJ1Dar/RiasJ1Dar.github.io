@@ -11,13 +11,19 @@
 </head>
 <body>
 <a class="skip" href="#desk">До столу</a>
+<div class="vhs-overlay" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+<div class="crt-vignette" aria-hidden="true"></div>
+<div class="boot" id="boot" aria-hidden="true">
+  <pre class="boot-log mono" id="boot-log"></pre>
+</div>
 
 <div class="desktop" id="desk">
   <header class="menubar">
     <button type="button" class="menu-btn" id="start-btn" aria-expanded="false" aria-controls="start-menu">Start</button>
     <div class="menu-links">
       <a href="#win-manifesto">Маніфест</a>
-      <a href="#win-projects">Проєкти</a>
+      <a href="#" data-win="win-projects">Проєкти</a>
       <a href="#win-faq">FAQ</a>
       <a href="https://github.com/RiasJ1Dar/" target="_blank" rel="noopener noreferrer">GitHub</a>
       <a href="https://gitlab.com/RiasJ1Dar" target="_blank" rel="noopener noreferrer">GitLab</a>
@@ -33,7 +39,7 @@
     <ul>
       <li><a href="#win-hero">Про автора</a></li>
       <li><a href="#win-manifesto">Маніфест</a></li>
-      <li><a href="#win-projects">Проєкти</a></li>
+      <li><a href="#" data-win="win-projects">Проєкти</a></li>
       <li><a href="#win-faq">FAQ</a></li>
       <li><a href="https://send.monobank.ua/jar/4XsDm8vmF2" target="_blank" rel="noopener noreferrer">Підтримати…</a></li>
       <li><a href="../">Neon site</a></li>
@@ -54,11 +60,11 @@
     </div>
     <div class="window-body notepad">
       <p class="mono path">RJ.OS · version 0.3 · тягни за синю смугу</p>
-      <h1>Я пішов в інший бік</h1>
+      <h1 class="glitch" data-text="Я пішов в інший бік">Я пішов в інший бік</h1>
       <p>не чат — інструменти, які тримають процес у коді.</p>
       <p>Віктор · <strong>RiasJ1Dar</strong>. Rust, Python, Windows-застосунки для агентів, завантажень і локалізації. Дзеркала на GitLab, банка Monobank як у Sponsor.</p>
       <div class="btn-row">
-        <a class="w95-btn" href="#win-projects">Проєкти</a>
+        <a class="w95-btn" href="#" data-win="win-projects">Проєкти</a>
         <a class="w95-btn" href="https://send.monobank.ua/jar/4XsDm8vmF2" target="_blank" rel="noopener noreferrer">Підтримати</a>
       </div>
     </div>
@@ -70,7 +76,7 @@
       <div class="controls" aria-hidden="true"><b></b><b></b><b class="x"></b></div>
     </div>
     <div class="window-body">
-      <h2>Не демо. Робочий стек.</h2>
+      <h2 class="glitch" data-text="Не демо. Робочий стек.">Не демо. Робочий стек.</h2>
       <div class="cols">
         <div class="inset">
           <p class="mono">not demos</p>
@@ -171,9 +177,10 @@ Status::Public ✓</code></pre>
 <footer class="taskbar">
   <button type="button" class="w95-btn start" id="task-start">Start</button>
   <div class="tasks">
-    <a class="task" href="#win-hero">README.txt</a>
-    <a class="task" href="#win-projects">Explorer</a>
-    <a class="task" href="#win-faq">FAQ.hlp</a>
+    <button type="button" class="task" data-win="win-hero">README.txt</button>
+    <button type="button" class="task" data-win="win-manifesto">Manifesto</button>
+    <button type="button" class="task" data-win="win-projects">Explorer</button>
+    <button type="button" class="task" data-win="win-faq">FAQ.hlp</button>
   </div>
   <div class="task-tray">
     <span class="mono" id="clock2">00:00</span>

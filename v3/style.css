@@ -183,3 +183,92 @@ a:hover{color:var(--magenta)}
   .cols{grid-template-columns:1fr}
   .list th:nth-child(3),.list td:nth-child(3){display:none}
 }
+
+/* --- VHS / 80s CRT vibe --- */
+.vhs-overlay,.scanlines,.crt-vignette{
+  pointer-events:none;position:fixed;inset:0;z-index:70
+}
+.vhs-overlay{
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 3px),
+    radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.35) 100%);
+  mix-blend-mode:multiply;opacity:.55;animation:vhsFlicker 4.5s infinite
+}
+.scanlines{
+  background:repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0) 0,
+    rgba(255,255,255,0) 1px,
+    rgba(0,0,0,.12) 2px,
+    rgba(0,0,0,.12) 3px
+  );
+  opacity:.25;z-index:71;animation:scanDrift 8s linear infinite
+}
+.crt-vignette{
+  box-shadow:inset 0 0 120px 40px rgba(0,0,0,.45);z-index:72;opacity:.7
+}
+@keyframes vhsFlicker{
+  0%,100%{opacity:.5} 92%{opacity:.5} 93%{opacity:.85} 94%{opacity:.4} 96%{opacity:.7} 97%{opacity:.5}
+}
+@keyframes scanDrift{to{transform:translateY(3px)}}
+
+.glitch{position:relative;display:inline-block}
+.glitch::before,.glitch::after{
+  content:attr(data-text);position:absolute;left:0;top:0;width:100%;overflow:hidden;
+  background:transparent;pointer-events:none
+}
+.glitch::before{
+  color:#0ff;z-index:-1;animation:glitchA 3.2s infinite linear alternate-reverse;
+  clip-path:inset(0 0 55% 0);transform:translate(-2px,0)
+}
+.glitch::after{
+  color:#f0f;z-index:-1;animation:glitchB 2.4s infinite linear alternate-reverse;
+  clip-path:inset(45% 0 0 0);transform:translate(2px,0)
+}
+@keyframes glitchA{
+  0%{clip-path:inset(20% 0 60% 0);transform:translate(-2px,0)}
+  20%{clip-path:inset(50% 0 20% 0);transform:translate(2px,1px)}
+  40%{clip-path:inset(10% 0 70% 0);transform:translate(-3px,-1px)}
+  60%{clip-path:inset(70% 0 5% 0);transform:translate(1px,0)}
+  80%{clip-path:inset(30% 0 40% 0);transform:translate(-1px,2px)}
+  100%{clip-path:inset(5% 0 80% 0);transform:translate(2px,0)}
+}
+@keyframes glitchB{
+  0%{clip-path:inset(60% 0 10% 0);transform:translate(2px,0)}
+  25%{clip-path:inset(15% 0 55% 0);transform:translate(-2px,1px)}
+  50%{clip-path:inset(40% 0 30% 0);transform:translate(3px,-1px)}
+  75%{clip-path:inset(80% 0 5% 0);transform:translate(-1px,0)}
+  100%{clip-path:inset(25% 0 50% 0);transform:translate(1px,1px)}
+}
+body.glitch-burst .desktop{animation:rgbShift .18s steps(2) 2}
+@keyframes rgbShift{
+  0%{filter:none}
+  50%{filter:hue-rotate(20deg) contrast(1.2) saturate(1.4);transform:translate(2px,0)}
+  100%{filter:none;transform:none}
+}
+.window.focus-flash > .titlebar{animation:titleFlash .35s linear 2}
+@keyframes titleFlash{
+  0%,100%{filter:none}
+  50%{filter:brightness(1.6) saturate(1.4)}
+}
+
+.boot{
+  position:fixed;inset:0;z-index:90;background:#000;color:#0f0;
+  display:flex;align-items:flex-start;padding:24px;font-family:var(--mono)
+}
+.boot[hidden],.boot.is-done{display:none!important}
+.boot-log{margin:0;white-space:pre-wrap;font-size:13px;line-height:1.4}
+
+.task{
+  font:700 11px/1.2 var(--font);cursor:pointer
+}
+.task.is-active{
+  border-top:2px solid var(--dk)!important;border-left:2px solid var(--dk)!important;
+  border-right:2px solid var(--hi)!important;border-bottom:2px solid var(--hi)!important;
+  background:#b0b0b0
+}
+
+@media (prefers-reduced-motion:reduce){
+  .vhs-overlay,.scanlines,.glitch::before,.glitch::after,body.glitch-burst .desktop{animation:none!important}
+  .glitch::before,.glitch::after{content:none}
+}
