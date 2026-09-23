@@ -277,9 +277,16 @@ a:hover{color:var(--magenta)}
 .start-group ul{border-bottom:1px solid var(--shadow);margin-bottom:2px}
 .start-menu button,
 .start-menu a{
-  display:block;width:100%;text-align:left;padding:7px 12px 7px 22px;
+  display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:7px 12px 7px 14px;
   color:#000;text-decoration:none;font:600 12px/1.2 var(--font);
   background:transparent;border:0;cursor:pointer
+}
+.start-group > summary{
+  display:flex;align-items:center;gap:8px
+}
+.sm-ico{
+  display:inline-flex;width:1.25em;justify-content:center;flex:0 0 1.25em;
+  font-style:normal;line-height:1
 }
 .start-menu button:hover,
 .start-menu a:hover{background:var(--title2);color:#fff}
