@@ -1,0 +1,156 @@
+:root{
+  --bg:#fefefe;
+  --ink:#1e1e1e;
+  --muted:#858585;
+  --line:#e5e5e5;
+  --pink:#d45bb6;
+  --pink2:#f386a1;
+  --teal:#09aea1;
+  --green:#03aa5c;
+  --panel:#f7f7f7;
+  --code:#1e1e1e;
+  --font:Inter,system-ui,sans-serif;
+  --mono:"Fragment Mono","JetBrains Mono",ui-monospace,monospace;
+  --max:1080px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font:400 17px/1.6 var(--font);-webkit-font-smoothing:antialiased
+}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--pink)}
+em{font-style:normal;color:var(--pink)}
+.mono{font-family:var(--mono);font-size:.78rem;letter-spacing:.02em}
+.muted{color:var(--muted)}
+.skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;background:var(--ink);color:#fff;padding:8px 12px;z-index:20}
+
+.nav{
+  position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:20px;
+  padding:14px clamp(16px,4vw,40px);background:rgba(254,254,254,.86);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--line)
+}
+.logo{font-weight:700;letter-spacing:-.02em;margin-right:auto}
+.logo .dot{color:var(--pink)}
+.nav nav{display:flex;gap:18px}
+.nav nav a{font-size:.95rem;color:var(--muted);font-weight:500}
+.nav nav a:hover{color:var(--ink)}
+.nav-cta{display:flex;align-items:center;gap:12px}
+.nav-cta a{font-size:.92rem;font-weight:600;color:var(--muted)}
+.pill{
+  background:var(--pink)!important;color:#fff!important;padding:8px 14px;border-radius:999px;
+  font-size:.85rem!important
+}
+.pill:hover{filter:brightness(1.05);color:#fff!important}
+
+.hero,.split,.codeband,.stats,.projects,.cta,.faq,.foot{
+  width:min(var(--max),100%);margin:0 auto;padding:0 clamp(16px,4vw,40px)
+}
+.hero{padding-top:72px;padding-bottom:56px}
+.eyebrow{color:var(--teal);margin:0 0 18px;text-transform:uppercase}
+.hero h1{
+  margin:0;font-size:clamp(2.4rem,6.2vw,4.4rem);line-height:1.02;
+  letter-spacing:-.035em;font-weight:600;max-width:16ch
+}
+.lede{max-width:42rem;color:var(--muted);font-size:1.08rem;margin:22px 0 28px}
+.hero-row{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:11px 18px;border-radius:999px;font-weight:600;font-size:.95rem;
+  border:1px solid transparent;transition:.15s
+}
+.btn.dark{background:var(--ink);color:#fff}
+.btn.dark:hover{background:#000;color:#fff}
+.btn.light{background:#fff;border-color:var(--line);color:var(--ink)}
+.btn.light:hover{border-color:var(--pink);color:var(--pink)}
+.btn.pink{background:var(--pink);color:#fff}
+.btn.pink:hover{filter:brightness(1.06);color:#fff}
+
+.split{
+  display:grid;grid-template-columns:1fr 1fr;gap:28px;
+  padding-top:24px;padding-bottom:56px
+}
+.split article{
+  padding:28px;border:1px solid var(--line);border-radius:18px;background:#fff
+}
+.tag{color:var(--pink2);margin:0 0 10px;text-transform:lowercase}
+.split h2{margin:0 0 12px;font-size:1.45rem;letter-spacing:-.02em;font-weight:600}
+.split p{margin:0;color:var(--muted)}
+
+.codeband{padding-bottom:56px}
+.codeband-head{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px}
+.code{
+  margin:0;padding:22px 24px;border-radius:16px;background:var(--code);color:#dedede;
+  font:400 13px/1.55 "JetBrains Mono",ui-monospace,monospace;overflow:auto;
+  border:1px solid #000
+}
+.code code{font:inherit}
+
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+  padding-bottom:64px
+}
+.stat{
+  border:1px solid var(--line);border-radius:18px;padding:22px 20px;background:var(--panel)
+}
+.stat .num{
+  margin:8px 0 6px;font-size:clamp(2.4rem,5vw,3.4rem);font-weight:600;
+  letter-spacing:-.04em;line-height:1
+}
+.stat .num.pink{color:var(--pink)}
+
+.section-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:end;margin-bottom:18px}
+.section-head h2,.faq>h2,.cta h2{margin:0;font-size:clamp(1.6rem,3vw,2.1rem);letter-spacing:-.02em;font-weight:600}
+
+.plist{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.plist li{border-bottom:1px solid var(--line)}
+.plist a{
+  display:grid;grid-template-columns:52px 1fr auto;gap:16px;align-items:start;
+  padding:22px 4px;color:inherit
+}
+.plist a:hover{background:linear-gradient(90deg,rgba(212,91,182,.06),transparent)}
+.plist .idx{color:var(--pink);padding-top:4px}
+.plist h3{margin:0 0 6px;font-size:1.15rem;font-weight:600;letter-spacing:-.01em}
+.plist p{margin:0;color:var(--muted);font-size:.98rem}
+.plist .meta{color:var(--muted);padding-top:6px;white-space:nowrap}
+
+.cta{
+  margin-top:56px;margin-bottom:56px;padding:36px clamp(16px,4vw,36px);
+  border-radius:24px;border:1px solid var(--line);
+  background:linear-gradient(135deg,rgba(212,91,182,.1),rgba(243,134,161,.08) 40%,#fff)
+}
+.cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+
+.faq{padding-bottom:64px}
+.faq-list{border-top:1px solid var(--line);margin-top:16px}
+.faq-list details{border-bottom:1px solid var(--line)}
+.faq-list summary{
+  cursor:pointer;list-style:none;padding:18px 2px;font-weight:600;
+  display:flex;justify-content:space-between;gap:12px
+}
+.faq-list summary::-webkit-details-marker{display:none}
+.faq-list summary::after{content:"+";font-family:var(--mono);color:var(--pink);font-weight:500}
+.faq-list details[open] summary::after{content:"–"}
+.faq-list p{margin:0 0 18px;color:var(--muted);max-width:52rem}
+.faq-list a{color:var(--pink);text-decoration:underline;text-underline-offset:3px}
+
+.foot{
+  display:grid;grid-template-columns:1fr auto auto;gap:18px;align-items:end;
+  padding-top:28px;padding-bottom:40px;border-top:1px solid var(--line);margin-top:12px
+}
+.foot-links{display:flex;gap:14px;flex-wrap:wrap}
+.foot-links a{color:var(--muted);font-weight:500}
+.foot p{margin:0}
+
+@media (max-width:860px){
+  .split,.stats{grid-template-columns:1fr}
+  .plist a{grid-template-columns:40px 1fr;grid-template-rows:auto auto}
+  .plist .meta{grid-column:2}
+  .nav nav{display:none}
+  .foot{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+}
