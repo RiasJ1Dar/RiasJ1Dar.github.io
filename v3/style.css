@@ -1,14 +1,14 @@
 :root{
-  --bg:#fefefe;
-  --ink:#1e1e1e;
-  --muted:#858585;
-  --line:#e5e5e5;
-  --pink:#d45bb6;
-  --pink2:#f386a1;
-  --teal:#09aea1;
-  --green:#03aa5c;
-  --panel:#f7f7f7;
-  --code:#1e1e1e;
+  --bg:#e8e2d8;
+  --ink:#2a2622;
+  --muted:#6e675e;
+  --line:#d2c9bc;
+  --pink:#b84f9c;
+  --pink2:#c97890;
+  --teal:#0a8f85;
+  --green:#028a4a;
+  --panel:#efe9df;
+  --code:#2a2622;
   --font:Inter,system-ui,sans-serif;
   --mono:"Fragment Mono","JetBrains Mono",ui-monospace,monospace;
   --max:1080px;
@@ -16,7 +16,8 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0;background:var(--bg);color:var(--ink);
+  /* warm paper wash */
+  margin:0;background:radial-gradient(1200px 700px at 50% -10%,#f3eee6,var(--bg) 55%);color:var(--ink);
   font:400 17px/1.6 var(--font);-webkit-font-smoothing:antialiased
 }
 a{color:inherit;text-decoration:none}
@@ -28,7 +29,7 @@ em{font-style:normal;color:var(--pink)}
 
 .nav{
   position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:20px;
-  padding:14px clamp(16px,4vw,40px);background:rgba(254,254,254,.86);
+  padding:14px clamp(16px,4vw,40px);background:rgba(232,226,216,.88);
   backdrop-filter:blur(12px);border-bottom:1px solid var(--line)
 }
 .logo{font-weight:700;letter-spacing:-.02em;margin-right:auto}
@@ -63,7 +64,7 @@ em{font-style:normal;color:var(--pink)}
 }
 .btn.dark{background:var(--ink);color:#fff}
 .btn.dark:hover{background:#000;color:#fff}
-.btn.light{background:#fff;border-color:var(--line);color:var(--ink)}
+.btn.light{background:var(--panel);border-color:var(--line);color:var(--ink)}
 .btn.light:hover{border-color:var(--pink);color:var(--pink)}
 .btn.pink{background:var(--pink);color:#fff}
 .btn.pink:hover{filter:brightness(1.06);color:#fff}
@@ -73,7 +74,7 @@ em{font-style:normal;color:var(--pink)}
   padding-top:24px;padding-bottom:56px
 }
 .split article{
-  padding:28px;border:1px solid var(--line);border-radius:18px;background:#fff
+  padding:28px;border:1px solid var(--line);border-radius:18px;background:var(--panel)
 }
 .tag{color:var(--pink2);margin:0 0 10px;text-transform:lowercase}
 .split h2{margin:0 0 12px;font-size:1.45rem;letter-spacing:-.02em;font-weight:600}
@@ -119,7 +120,7 @@ em{font-style:normal;color:var(--pink)}
 .cta{
   margin-top:56px;margin-bottom:56px;padding:36px clamp(16px,4vw,36px);
   border-radius:24px;border:1px solid var(--line);
-  background:linear-gradient(135deg,rgba(212,91,182,.1),rgba(243,134,161,.08) 40%,#fff)
+  background:linear-gradient(135deg,rgba(184,79,156,.12),rgba(201,120,144,.08) 40%,var(--panel))
 }
 .cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
 
