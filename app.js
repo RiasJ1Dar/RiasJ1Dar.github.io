@@ -471,7 +471,6 @@ donate  = "monobank"`);
         termPrint('RiasJiDar');
         break;
       case 'neofetch':
-      case 'about':
         termPrint(`         .-/+oossssoo+/-.
      RJ.OS 0.5 / Win95 Deck
      Host:    RiasJiDar
@@ -480,6 +479,9 @@ donate  = "monobank"`);
      Focus:   agents · mcp · windows
      Donate:  monobank jar
      Uptime:  since you opened this tab`);
+        break;
+      case 'about':
+        termPrint('RJ.OS 0.5 — RiasJiDar · rust/python/csharp · agents/mcp/windows');
         break;
       case 'exit':
       case 'quit':
