@@ -1,10 +1,9 @@
 (() => {
-  // soft sticky nav shade on scroll
   const nav = document.querySelector('.nav');
-  const onScroll = () => {
+  const paint = () => {
     if (!nav) return;
-    nav.style.boxShadow = window.scrollY > 8 ? '0 1px 0 rgba(0,0,0,.04)' : 'none';
+    nav.style.borderBottomColor = window.scrollY > 6 ? 'rgba(30,30,30,.12)' : '';
   };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  window.addEventListener('scroll', paint, { passive: true });
+  paint();
 })();

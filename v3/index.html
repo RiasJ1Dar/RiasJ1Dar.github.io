@@ -4,237 +4,165 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RiasJ1Dar · Open Tools</title>
-<meta name="description" content="Відкритий код Віктора: інструменти для агентів, завантаження, локалізація. Портфоліо в editorial-стилі.">
-<meta name="theme-color" content="#e8e2d8">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231e1e1e'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-family='ui-monospace' font-size='11' font-weight='700' fill='%23d45bb6'%3ERJ%3C/text%3E%3C/svg%3E">
+<meta name="description" content="Відкритий код Віктора: інструменти для агентів, завантаження, локалізація.">
+<meta name="theme-color" content="#f3ece6">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231e1e1e'/%3E%3Cpath d='M8 22V10h6.2c2.6 0 4.2 1.4 4.2 3.5S16.8 17 14.2 17H11v5H8zm3-7.5h2.8c1.1 0 1.7-.5 1.7-1.3s-.6-1.2-1.7-1.2H11v2.5z' fill='%23f386a1'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fragment+Mono:wght@400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fragment+Mono&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <a class="skip" href="#main">До вмісту</a>
 
 <header class="nav">
-  <a class="logo" href="#">RiasJ1Dar<span class="dot">.</span></a>
-  <nav aria-label="Головна">
+  <a class="brand" href="#">
+    <span class="mark" aria-hidden="true"></span>
+    RiasJ1Dar
+  </a>
+  <nav>
     <a href="#manifesto">Маніфест</a>
     <a href="#projects">Проєкти</a>
     <a href="#faq">FAQ</a>
   </nav>
-  <div class="nav-cta">
-    <a href="https://github.com/RiasJ1Dar/" target="_blank" rel="noopener noreferrer">GitHub</a>
-    <a class="pill" href="https://send.monobank.ua/jar/4XsDm8vmF2" target="_blank" rel="noopener noreferrer">Підтримати</a>
+  <div class="nav-end">
+    <a class="ghost" href="https://github.com/RiasJ1Dar/" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a class="chip" href="https://send.monobank.ua/jar/4XsDm8vmF2" target="_blank" rel="noopener noreferrer">Підтримати</a>
   </div>
 </header>
 
 <main id="main">
-  <section class="hero">
-    <p class="eyebrow mono">Version 0.3 · open source</p>
-    <h1>Я будую інструменти,<br>які тримають <em>процес</em>,<br>а не лише чат.</h1>
+  <section class="hero wrap">
+    <p class="mono kicker">RJ.OS · 0.3</p>
+    <h1>Ми пішли в інший бік:<br><span class="soft">не чат — інструменти.</span></h1>
     <p class="lede">
-      Віктор · RiasJ1Dar. Rust, Python і Windows-застосунки для агентів, завантажень і локалізації —
-      з реальними схемами в README, дзеркалами на GitLab і відкритою ліцензією.
+      Віктор · RiasJ1Dar. Відкритий код для агентів, черг завантаження й локалізації —
+      з архітектурою в репо, дзеркалами на GitLab і ліцензіями без сюрпризів.
     </p>
-    <div class="hero-row">
-      <a class="btn dark" href="#projects">Дивитись проєкти</a>
-      <a class="btn light" href="https://gitlab.com/RiasJ1Dar" target="_blank" rel="noopener noreferrer">GitLab mirrors</a>
-      <span class="mono muted">TS → RJ · made for builders</span>
+    <div class="hero-actions">
+      <a class="btn ink" href="#projects">Проєкти</a>
+      <a class="btn line" href="https://gitlab.com/RiasJ1Dar" target="_blank" rel="noopener noreferrer">GitLab</a>
     </div>
   </section>
 
-  <section class="split" id="manifesto">
-    <article>
-      <p class="tag mono">not demos</p>
-      <h2>Не вітрина заради вітрини</h2>
-      <p>
-        Багато портфоліо показують скріншоти. Мені важливіше, щоб репозиторій можна було клонувати,
-        зрозуміти архітектуру й запустити. Тому в проєктах — схеми, контракти й чесні обмеження.
-      </p>
+  <section class="pair wrap" id="manifesto">
+    <article class="card">
+      <p class="mono accent">not demos</p>
+      <h2>Не скріншоти заради краси</h2>
+      <p>Клонуй, читай схему, запускай. У README — чесні обмеження й те, як система реально працює.</p>
     </article>
-    <article>
-      <p class="tag mono">a working stack</p>
-      <h2>Рішення, якими користуються інструменти</h2>
-      <p>
-        MCP-пошта між агентами, черга завантажень з resume, локальний Entra-проксі для Codex,
-        українська локалізація IDE. Код ближчий до інфраструктури, ніж до лендінгу.
-      </p>
+    <article class="card">
+      <p class="mono accent">a working stack</p>
+      <h2>Рішення ближчі до коду</h2>
+      <p>MCP між агентами, resume-черга, Entra-проксі на loopback, український UI для IDE.</p>
     </article>
   </section>
 
-  <section class="codeband">
-    <div class="codeband-head">
-      <span class="mono">[rj.core]</span>
-      <span class="mono muted">typed intent · open repos</span>
-    </div>
-    <pre class="code" aria-label="Приклад структури"><code>pub struct Signal {
-    pub project: &amp;'static str,
-    pub forge: Forge,      // GitHub + GitLab mirror
-    pub runtime: Runtime,  // rust | python | csharp | shell
-    pub human_docs: bool,  // README · architecture
+  <section class="band wrap">
+    <div class="frame dark">
+      <div class="frame-meta mono">
+        <span>[b.64]</span>
+        <span>typed intent</span>
+      </div>
+      <pre><code>struct Signal {
+    project: &amp;'static str,
+    forge: Forge,       // GitHub + GitLab mirror
+    runtime: Runtime,   // rust | python | csharp
+    docs: bool,         // README · architecture
 }
 
-impl Signal {
-    pub fn ship(&amp;self) -&gt; Status {
-        Status::Public { license: self.license() }
-    }
+fn ship(s: Signal) -&gt; Status {
+    Status::Public { license: s.license() }
 }</code></pre>
+    </div>
   </section>
 
-  <section class="stats">
-    <div class="stat">
-      <p class="mono">public repos</p>
-      <p class="num">8</p>
-      <p class="muted">без community-шаблону .github у сітці</p>
+  <section class="stats wrap">
+    <div>
+      <p class="mono">public</p>
+      <p class="big">8</p>
+      <p class="dim">репозиторіїв у сітці</p>
     </div>
-    <div class="stat">
+    <div>
       <p class="mono">forges</p>
-      <p class="num">2×</p>
-      <p class="muted">GitHub origin · GitLab mirrors</p>
+      <p class="big">2×</p>
+      <p class="dim">GitHub · GitLab</p>
     </div>
-    <div class="stat">
+    <div>
       <p class="mono">focus</p>
-      <p class="num pink">agents</p>
-      <p class="muted">MCP · IPC · localization · OTA</p>
+      <p class="big accent-text">agents</p>
+      <p class="dim">MCP · IPC · OTA</p>
     </div>
   </section>
 
-  <section class="projects" id="projects">
-    <div class="section-head">
+  <section class="projects wrap" id="projects">
+    <div class="sec-head">
       <h2>Проєкти</h2>
-      <p class="muted">вісім публічних сигналів · посилання ведуть на GitHub</p>
+      <p class="dim mono">вісім публічних сигналів</p>
     </div>
-    <ul class="plist">
-      <li>
-        <a href="https://github.com/RiasJ1Dar/agent-exchange" target="_blank" rel="noopener noreferrer">
-          <span class="idx mono">01</span>
-          <div>
-            <h3>agent-exchange</h3>
-            <p>MCP + SQLite: пошта й замки для двох агентів над одним кодом. Для людини — NOW.md і read-only UI.</p>
-          </div>
-          <span class="meta mono">Rust</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://github.com/RiasJ1Dar/downloader" target="_blank" rel="noopener noreferrer">
-          <span class="idx mono">02</span>
-          <div>
-            <h3>Downloader</h3>
-            <p>Ядро-черга з resume. Avalonia / CLI / розширення через локальний IPC. GPL-3.0.</p>
-          </div>
-          <span class="meta mono">Rust · C#</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://github.com/RiasJ1Dar/antigravity-ua" target="_blank" rel="noopener noreferrer">
-          <span class="idx mono">03</span>
-          <div>
-            <h3>Antigravity UA</h3>
-            <p>Український UI для IDE: словник, DOM-інжектор, інсталятор з відкатом.</p>
-          </div>
-          <span class="meta mono">JS · C#</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://github.com/RiasJ1Dar/umod-codex-gui" target="_blank" rel="noopener noreferrer">
-          <span class="idx mono">04</span>
-          <div>
-            <h3>umod-codex-gui</h3>
-            <p>GUI для запуску Codex CLI через локальний Entra token-proxy.</p>
-          </div>
-          <span class="meta mono">Rust</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://github.com/RiasJ1Dar/umod-installer" target="_blank" rel="noopener noreferrer">
-          <span class="idx mono">05</span>
-          <div>
-            <h3>umod-installer</h3>
-            <p>Конфіг, скрипти й loopback-проксі під UMOD inference.</p>
-          </div>
-          <span class="meta mono">Python · Shell</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://github.com/RiasJ1Dar/TwitchDropFarm" target="_blank" rel="noopener noreferrer">
-          <span class="idx mono">06</span>
-          <div>
-            <h3>TwitchDropFarm</h3>
-            <p>Автозбір Twitch Drops: сесії, розклад, стабільний прогін.</p>
-          </div>
-          <span class="meta mono">Automation</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://github.com/RiasJ1Dar/sweet-nethunter-kernel" target="_blank" rel="noopener noreferrer">
-          <span class="idx mono">07</span>
-          <div>
-            <h3>sweet-nethunter-kernel</h3>
-            <p>Кастомне ядро NetHunter під sweet. GPL-2.0.</p>
-          </div>
-          <span class="meta mono">Kernel</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://github.com/RiasJ1Dar/szi-as-ota" target="_blank" rel="noopener noreferrer">
-          <span class="idx mono">08</span>
-          <div>
-            <h3>szi-as-ota</h3>
-            <p>OTA-пайплайн і допоміжні скрипти для оновлень.</p>
-          </div>
-          <span class="meta mono">OTA</span>
-        </a>
-      </li>
+    <ul class="rows">
+      <li><a href="https://github.com/RiasJ1Dar/agent-exchange" target="_blank" rel="noopener noreferrer"><span class="mono n">01</span><div><h3>agent-exchange</h3><p>MCP + SQLite: пошта й замки для двох агентів. NOW.md і read-only UI для людини.</p></div><span class="mono t">Rust</span></a></li>
+      <li><a href="https://github.com/RiasJ1Dar/downloader" target="_blank" rel="noopener noreferrer"><span class="mono n">02</span><div><h3>Downloader</h3><p>Ядро-черга з resume. Avalonia / CLI / розширення. GPL-3.0.</p></div><span class="mono t">Rust · C#</span></a></li>
+      <li><a href="https://github.com/RiasJ1Dar/antigravity-ua" target="_blank" rel="noopener noreferrer"><span class="mono n">03</span><div><h3>Antigravity UA</h3><p>Український UI IDE: словник, DOM-інжектор, інсталятор з відкатом.</p></div><span class="mono t">JS · C#</span></a></li>
+      <li><a href="https://github.com/RiasJ1Dar/umod-codex-gui" target="_blank" rel="noopener noreferrer"><span class="mono n">04</span><div><h3>umod-codex-gui</h3><p>GUI для Codex CLI через локальний Entra token-proxy.</p></div><span class="mono t">Rust</span></a></li>
+      <li><a href="https://github.com/RiasJ1Dar/umod-installer" target="_blank" rel="noopener noreferrer"><span class="mono n">05</span><div><h3>umod-installer</h3><p>Конфіг, скрипти й loopback-проксі під UMOD.</p></div><span class="mono t">Python</span></a></li>
+      <li><a href="https://github.com/RiasJ1Dar/TwitchDropFarm" target="_blank" rel="noopener noreferrer"><span class="mono n">06</span><div><h3>TwitchDropFarm</h3><p>Автозбір Twitch Drops: сесії й розклад.</p></div><span class="mono t">Auto</span></a></li>
+      <li><a href="https://github.com/RiasJ1Dar/sweet-nethunter-kernel" target="_blank" rel="noopener noreferrer"><span class="mono n">07</span><div><h3>sweet-nethunter-kernel</h3><p>Кастомне ядро NetHunter. GPL-2.0.</p></div><span class="mono t">Kernel</span></a></li>
+      <li><a href="https://github.com/RiasJ1Dar/szi-as-ota" target="_blank" rel="noopener noreferrer"><span class="mono n">08</span><div><h3>szi-as-ota</h3><p>OTA-пайплайн і скрипти оновлень.</p></div><span class="mono t">OTA</span></a></li>
     </ul>
   </section>
 
-  <section class="cta">
-    <p class="mono">come build / support</p>
-    <h2>Підтримати автора</h2>
-    <p class="muted">Та сама банка Monobank, що в GitHub Sponsor. Дзеркала — на GitLab.</p>
-    <div class="cta-row">
+  <section class="support wrap">
+    <p class="mono accent">come build with us</p>
+    <h2>Підтримати сигнал</h2>
+    <p class="dim">Банка Monobank — та сама, що GitHub Sponsor. Дзеркала на GitLab.</p>
+    <div class="hero-actions">
       <a class="btn pink" href="https://send.monobank.ua/jar/4XsDm8vmF2" target="_blank" rel="noopener noreferrer">Monobank</a>
-      <a class="btn light" href="https://github.com/RiasJ1Dar/" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a class="btn light" href="https://gitlab.com/RiasJ1Dar" target="_blank" rel="noopener noreferrer">GitLab</a>
+      <a class="btn line" href="https://github.com/RiasJ1Dar/" target="_blank" rel="noopener noreferrer">GitHub</a>
     </div>
   </section>
 
-  <section class="faq" id="faq">
-    <h2>FAQ</h2>
-    <div class="faq-list">
-      <details open>
-        <summary>Що це за сторінка?</summary>
-        <p>Третій варіант портфоліо: світлий editorial-стиль на кшталт typesafe.ai — маніфест, список проєктів і FAQ. Не копія їхнього продукту, лише мова оформлення.</p>
-      </details>
-      <details>
-        <summary>Де інші варіанти?</summary>
-        <p>Класичний фіолетовий неон — на <a href="../">головній</a>. Signal Deck (HUD/bento) — на <a href="../v2/">/v2/</a>. Цей — <a href="./">/v3/</a>.</p>
-      </details>
-      <details>
-        <summary>Чому немає картки .github?</summary>
-        <p>Це community health files (шаблони issues, SECURITY), а не окремий продукт. Тому в сітці проєктів його немає.</p>
-      </details>
-      <details>
-        <summary>Як підтримати?</summary>
-        <p>Через <a href="https://send.monobank.ua/jar/4XsDm8vmF2" target="_blank" rel="noopener noreferrer">банку Monobank</a> — ту саму, що вказана як GitHub Sponsor.</p>
-      </details>
+  <section class="faq-zone" id="faq">
+    <div class="sage" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="frame dark faq-frame">
+        <div class="frame-meta mono">
+          <span>:: □</span>
+          <span>▮ ▮</span>
+        </div>
+        <h2>Ми даємо FAQ</h2>
+        <div class="faq">
+          <details open>
+            <summary>Що це за сторінка?<span class="chev" aria-hidden="true"></span></summary>
+            <p>Варіант портфоліо в editorial-мові typesafe.ai: маніфест, список репо, темний FAQ з кутовими дужками. Не їхній продукт — лише стиль подачі.</p>
+          </details>
+          <details>
+            <summary>Де інші варіанти?<span class="chev" aria-hidden="true"></span></summary>
+            <p>Неон — <a href="../">головна</a>. Signal Deck — <a href="../v2/">/v2/</a>. Цей — <a href="./">/v3/</a>.</p>
+          </details>
+          <details>
+            <summary>Чому немає .github у списку?<span class="chev" aria-hidden="true"></span></summary>
+            <p>Це community health files, не окремий продукт.</p>
+          </details>
+          <details>
+            <summary>Як підтримати?<span class="chev" aria-hidden="true"></span></summary>
+            <p>Через <a href="https://send.monobank.ua/jar/4XsDm8vmF2" target="_blank" rel="noopener noreferrer">банку Monobank</a>.</p>
+          </details>
+        </div>
+      </div>
     </div>
   </section>
 </main>
 
-<footer class="foot">
-  <div>
-    <p class="mono">RJ.OS.0.3</p>
-    <p class="muted">© 2026 RiasJ1Dar. All rights reserved.</p>
-  </div>
+<footer class="foot wrap">
+  <p class="mono">RJ.OS.0.3 · © 2026 RiasJ1Dar</p>
   <div class="foot-links">
     <a href="../">Neon</a>
     <a href="../v2/">Signal Deck</a>
-    <a href="mailto:">hello via GitHub</a>
+    <a href="https://gitlab.com/RiasJ1Dar" target="_blank" rel="noopener noreferrer">GitLab</a>
   </div>
-  <p class="mono muted">Made with care. For builders.</p>
+  <p class="mono dim">Made with care. For builders.</p>
 </footer>
-
 <script src="app.js"></script>
 </body>
 </html>
