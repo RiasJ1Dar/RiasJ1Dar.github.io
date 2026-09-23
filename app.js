@@ -58,8 +58,13 @@
     e.stopPropagation();
     toggleMenu();
   });
-  document.addEventListener('click', () => toggleMenu(false));
-  menu?.addEventListener('click', (e) => e.stopPropagation());
+  /* Close only on outside tap — do NOT stopPropagation on the whole menu,
+     or [data-win] buttons never reach the document opener (broken on phones). */
+  document.addEventListener('click', (e) => {
+    if (!menu || menu.hasAttribute('hidden')) return;
+    if (e.target.closest('#start-menu') || e.target.closest('#task-start')) return;
+    toggleMenu(false);
+  });
 
   let z = 20;
   /** @type {Set<string>} window ids that are minimized (hidden but still on taskbar) */
