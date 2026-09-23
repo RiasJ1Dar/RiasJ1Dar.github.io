@@ -1,9 +1,14 @@
 (() => {
-  const nav = document.querySelector('.nav');
-  const paint = () => {
-    if (!nav) return;
-    nav.style.borderBottomColor = window.scrollY > 6 ? 'rgba(30,30,30,.12)' : '';
+  // subtle live clock in manifesto terminal bar if present
+  const bar = document.querySelector('.term-bar b');
+  if (!bar) return;
+  const tick = () => {
+    const d = new Date();
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    const ss = String(d.getSeconds()).padStart(2, '0');
+    bar.textContent = `[${hh}:${mm}:${ss}]`;
   };
-  window.addEventListener('scroll', paint, { passive: true });
-  paint();
+  tick();
+  setInterval(tick, 1000);
 })();
