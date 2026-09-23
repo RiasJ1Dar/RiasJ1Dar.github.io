@@ -81,12 +81,17 @@
           <div class="controls" aria-hidden="true"><b></b><b></b><b class="x"></b></div>
         </div>
         <pre class="term-body"><code>$ cat signal.toml
-[project]
-forge   = "GitHub + GitLab"
-runtime = "rust | python | csharp"
-docs    = true
+[identity]
+handle  = "RiasJ1Dar"
+forge   = ["github", "gitlab"]
 
-$ ./ship
+[stack]
+lang    = ["rust", "python", "csharp"]
+focus   = ["agents", "mcp", "windows"]
+donate  = "monobank"
+
+$ ./ship --public
+Status::Mirrored ✓
 Status::Public ✓<span class="cursor" aria-hidden="true"></span></code></pre>
       </div>
     </div>
