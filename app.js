@@ -1,163 +1,516 @@
-const cases={
-exchange:{name:'agent-exchange',type:'RUST / SQLITE / MCP',problem:'Два агенти працюють над одним кодом, але не бачать сесій одне одного. Через це зміни можуть дублюватися або конфліктувати.',solution:'MCP-сервер зберігає повідомлення й замки на теми у SQLite. Людина бачить стан у NOW.md та локальному вікні тільки для читання.',decision:'Сервер змінює лише позначені блоки NOW.md. Рукописний текст поза ними зберігається.',top:[['Агент A','MCP-клієнт'],['Агент B','MCP-клієнт']],core:['exchange-mcp','пошта · замки · render'],bottom:[['SQLite','спільний стан'],['NOW.md','дошка для людини'],['Web UI','тільки читання']],transport:'stdio / JSON-RPC',output:'збереження та відображення',caption:'Спрощено за README: спільне сховище координує роботу агентів, а дошка та UI роблять її видимою людині.',links:[['Репозиторій','agent-exchange'],['Повна схема','agent-exchange/blob/main/docs/architecture.md']]},
-downloader:{name:'Downloader',type:'RUST / C# / AVALONIA',problem:'Завантаження мають продовжуватися після обривів і закриття вікна. Різні протоколи потребують спільної черги й керування.',solution:'Окремий процес ядра керує чергою. Вікно, CLI та браузерне розширення звертаються до нього через локальний канал; протоколи підключаються через контракт Protocol.',decision:'Спочатку дані записуються й синхронізуються, потім зберігається стан. Це допомагає коректно відновити завантаження після збою.',top:[['Avalonia / CLI','інтерфейси'],['Розширення','через nmhost']],core:['Rust core-service','черга · планувальник · події'],bottom:[['HTTP','сегменти / resume'],['HLS / DASH','потоки й доріжки'],['yt-dlp','YouTube']],transport:'локальний IPC',output:'контракт Protocol',caption:'Спрощено за README. ffmpeg використовується окремим процесом для зведення доріжок і роботи з контейнерами.',links:[['Репозиторій','downloader'],['Повна схема','downloader/blob/master/docs/architecture.json']]},
-antigravity:{name:'Antigravity UA',type:'JAVASCRIPT / C# / PYTHON',problem:'Український інтерфейс IDE має перекладати елементи керування, зберігаючи код, термінал, користувацький ввід та іконки.',solution:'Словник перекладів і DOM-інжектор формують пакет локалізації. Автономний інсталятор створює резервну копію та дає змогу відновити оригінал.',decision:'TreeWalker і MutationObserver обробляють інтерфейс. Ділянки коду та термінали виключені з автоперекладу.',top:[['Словник','uk_translations.json'],['DOM-інжектор','JavaScript']],core:['Пакет локалізації','app_uk.asar'],bottom:[['Інсталятор','C# / WinForms'],['Резервна копія','app.asar.bak'],['Український UI','Antigravity 2.0']],transport:'підготовка ASAR',output:'встановлення з відновленням',caption:'Схема узагальнює склад і процес доставки локалізації. Словник містить понад 1 670 ключів за даними README.',links:[['Репозиторій','antigravity-ua'],['Повна схема','antigravity-ua/blob/main/docs/architecture.json']]},
-umod:{name:'UMOD · від налаштування до запуску',type:'RUST / PYTHON / SHELL',problem:'Підключення Codex потребує конфігурації, вибору моделі й чинного токена. Ручне повторення цих кроків ускладнює щоденну роботу.',solution:'Installer готує конфігурацію та скрипти. GUI запускає проксі й Codex CLI. Локальний проксі підставляє Entra-токен та оновлює його до завершення строку дії.',decision:'Проксі слухає лише loopback. Credential-файл видається окремо; його вміст GUI не показує.',top:[['Installer','конфігурація'],['Rust GUI','запуск Codex CLI']],core:['umod-token-proxy','127.0.0.1:8787'],bottom:[['Microsoft Entra','отримання токена'],['UMOD inference','запити Codex']],transport:'Codex CLI → локальний проксі',output:'автентифікація та запити',caption:'Узагальнена схема двох пов’язаних репозиторіїв. Проксі оновлює токен за 5 хвилин до завершення строку дії.',links:[['GUI на GitHub','umod-codex-gui'],['Installer на GitHub','umod-installer']]}
-};
-
-const panel=document.getElementById('case-panel');
-const tabs=[...document.querySelectorAll('[role="tab"]')];
-const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const node=([title,sub],core=false)=>`<div class="node${core?' node-core':''}">${title}<small>${sub}</small></div>`;
-
-function selectProject(id,focus=false){
-  const c=cases[id]; if(!c) return;
-  tabs.forEach(t=>{
-    const active=t.dataset.project===id;
-    t.setAttribute('aria-selected',String(active));
-    t.tabIndex=active?0:-1;
-    if(active&&focus) t.focus();
-  });
-  panel.setAttribute('aria-labelledby','tab-'+id);
-  panel.innerHTML=`<article class="case"><div class="case-text"><span class="case-label">${c.type}</span><h3>${c.name}</h3><h4>ЗАДАЧА</h4><p>${c.problem}</p><h4>РІШЕННЯ</h4><p>${c.solution}</p><h4>ТЕХНІЧНИЙ АКЦЕНТ</h4><p>${c.decision}</p><div class="case-links">${c.links.map(([label,path])=>`<a href="https://github.com/RiasJ1Dar/${path}" target="_blank" rel="noopener noreferrer">${label} ↗</a>`).join('')}</div></div><figure class="diagram" style="margin:0" aria-label="Схема архітектури ${c.name}"><div class="diagram-head"><span>АРХІТЕКТУРА</span><span>СПРОЩЕНА СХЕМА</span></div><div class="flow"><div class="flow-top">${c.top.map(n=>node(n)).join('')}</div><div class="flow-arrow"><span aria-hidden="true">↓</span>${c.transport}</div>${node(c.core,true)}<div class="flow-arrow"><span aria-hidden="true">↓</span>${c.output}</div><div class="flow-bottom">${c.bottom.map(n=>node(n)).join('')}</div></div><figcaption class="diagram-caption">${c.caption}</figcaption></figure></article>`;
-}
-
-tabs.forEach((tab,i)=>{
-  tab.addEventListener('click',()=>selectProject(tab.dataset.project));
-  tab.addEventListener('keydown',e=>{
-    let next;
-    if(e.key==='ArrowRight') next=(i+1)%tabs.length;
-    else if(e.key==='ArrowLeft') next=(i+tabs.length-1)%tabs.length;
-    else if(e.key==='Home') next=0;
-    else if(e.key==='End') next=tabs.length-1;
-    else return;
-    e.preventDefault();
-    selectProject(tabs[next].dataset.project,true);
-  });
-});
-document.querySelectorAll('[data-select]').forEach(link=>link.addEventListener('click',()=>selectProject(link.dataset.select)));
-selectProject('exchange');
-
-/* scroll progress */
-const bar=document.querySelector('.scroll-progress');
-function onScroll(){
-  if(!bar) return;
-  const h=document.documentElement;
-  const max=h.scrollHeight-h.clientHeight;
-  bar.style.width=(max>0?(h.scrollTop/max)*100:0)+'%';
-}
-window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
-
-/* reveal on scroll */
-if(!reduce){
-  const cards=[...document.querySelectorAll('.reveal-card')];
-  cards.forEach((el,i)=>el.style.setProperty('--i',i%6));
-  const io=new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
-  },{threshold:.12, rootMargin:'0px 0px -8% 0px'});
-  document.querySelectorAll('.reveal,.reveal-card').forEach(el=>io.observe(el));
-} else {
-  document.querySelectorAll('.reveal,.reveal-card').forEach(el=>el.classList.add('in'));
-}
-
-/* custom cursor */
-const cur=document.querySelector('.cursor');
-const dot=document.querySelector('.cursor-dot');
-let mx=0,my=0,cx=0,cy=0;
-if(cur&&dot&&!reduce&&matchMedia('(pointer:fine)').matches){
-  window.addEventListener('mousemove',e=>{
-    mx=e.clientX; my=e.clientY;
-    dot.style.left=mx+'px'; dot.style.top=my+'px';
-  },{passive:true});
-  (function loop(){
-    cx+=(mx-cx)*.18; cy+=(my-cy)*.18;
-    cur.style.left=cx+'px'; cur.style.top=cy+'px';
-    requestAnimationFrame(loop);
-  })();
-  document.querySelectorAll('a,button').forEach(el=>{
-    el.addEventListener('mouseenter',()=>cur.classList.add('on-link'));
-    el.addEventListener('mouseleave',()=>cur.classList.remove('on-link'));
-  });
-}
-
-/* card tilt */
-if(!reduce&&matchMedia('(pointer:fine)').matches){
-  document.querySelectorAll('.repo-card').forEach(card=>{
-    card.addEventListener('mousemove',e=>{
-      const r=card.getBoundingClientRect();
-      const x=(e.clientX-r.left)/r.width-.5;
-      const y=(e.clientY-r.top)/r.height-.5;
-      card.style.transform=`perspective(900px) rotateY(${x*10}deg) rotateX(${-y*10}deg) translateY(-4px)`;
+(() => {
+  const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const pads = (n) => String(n).padStart(2, '0');
+  const paintClock = () => {
+    const d = new Date();
+    const t = `${pads(d.getHours())}:${pads(d.getMinutes())}`;
+    document.querySelectorAll('#clock, #clock2').forEach((el) => {
+      el.textContent = t;
+      if ('dateTime' in el) el.dateTime = d.toISOString();
     });
-    card.addEventListener('mouseleave',()=>{ card.style.transform=''; });
-  });
-}
+  };
+  paintClock();
+  setInterval(paintClock, 1000);
 
-/* magnetic buttons */
-if(!reduce&&matchMedia('(pointer:fine)').matches){
-  document.querySelectorAll('.magnetic').forEach(btn=>{
-    btn.addEventListener('mousemove',e=>{
-      const r=btn.getBoundingClientRect();
-      const x=e.clientX-(r.left+r.width/2);
-      const y=e.clientY-(r.top+r.height/2);
-      btn.style.transform=`translate(${x*.2}px,${y*.2}px)`;
-    });
-    btn.addEventListener('mouseleave',()=>{ btn.style.transform=''; });
-  });
-}
-
-/* canvas particles / constellation */
-(function(){
-  const canvas=document.getElementById('bg-canvas');
-  if(!canvas||reduce) return;
-  const ctx=canvas.getContext('2d');
-  let w,h,pts,raf,mxp=.5,myp=.5;
-  function resize(){
-    w=canvas.width=innerWidth; h=canvas.height=innerHeight;
-    const n=Math.min(70, Math.floor((w*h)/18000));
-    pts=Array.from({length:n},()=>({
-      x:Math.random()*w,y:Math.random()*h,
-      vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35,
-      r:Math.random()*1.8+.4
-    }));
-  }
-  window.addEventListener('resize',resize,{passive:true});
-  window.addEventListener('mousemove',e=>{mxp=e.clientX/w; myp=e.clientY/h;},{passive:true});
-  resize();
-  const colors=['rgba(232,121,249,','rgba(167,139,250,','rgba(129,140,248,','rgba(34,211,238,'];
-  function frame(){
-    ctx.clearRect(0,0,w,h);
-    // soft iridescent orbs following mouse
-    const g=ctx.createRadialGradient(mxp*w,myp*h,0,mxp*w,myp*h,280);
-    g.addColorStop(0,'rgba(232,121,249,.12)');
-    g.addColorStop(.45,'rgba(129,140,248,.06)');
-    g.addColorStop(1,'transparent');
-    ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
-
-    for(const p of pts){
-      p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0||p.x>w) p.vx*=-1;
-      if(p.y<0||p.y>h) p.vy*=-1;
-    }
-    for(let i=0;i<pts.length;i++){
-      for(let j=i+1;j<pts.length;j++){
-        const a=pts[i],b=pts[j];
-        const dx=a.x-b.x, dy=a.y-b.y, d=Math.hypot(dx,dy);
-        if(d<140){
-          ctx.strokeStyle=`rgba(180,120,255,${(1-d/140)*.22})`;
-          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-        }
+  const boot = document.getElementById('boot');
+  const bootLog = document.getElementById('boot-log');
+  if (boot && bootLog && !prefersReduce) {
+    const lines = [
+      'RJ.OS BIOS v0.5',
+      'Checking memory …… OK',
+      'Mounting C:\\RiasJiDar …… OK',
+      'Starting desktop shell …',
+    ];
+    let i = 0;
+    bootLog.textContent = '';
+    const tick = () => {
+      if (i < lines.length) {
+        bootLog.textContent += `${lines[i]}\n`;
+        i += 1;
+        setTimeout(tick, 160);
+      } else {
+        setTimeout(() => {
+          boot.classList.add('is-done');
+          boot.setAttribute('hidden', '');
+        }, 220);
       }
-    }
-    pts.forEach((p,i)=>{
-      const col=colors[i%colors.length];
-      ctx.fillStyle=col+'.75)';
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
-    });
-    raf=requestAnimationFrame(frame);
+    };
+    tick();
+  } else if (boot) {
+    boot.classList.add('is-done');
+    boot.setAttribute('hidden', '');
   }
-  frame();
-  document.addEventListener('visibilitychange',()=>{
-    if(document.hidden) cancelAnimationFrame(raf); else frame();
+
+  const desk = document.getElementById('desk');
+  const menu = document.getElementById('start-menu');
+  const tasksEl = document.getElementById('tasks');
+  const startBtn = document.getElementById('task-start');
+  const shutdownEl = document.getElementById('shutdown');
+
+  const toggleMenu = (open) => {
+    if (!menu) return;
+    const next = open ?? menu.hasAttribute('hidden');
+    if (next) menu.removeAttribute('hidden');
+    else menu.setAttribute('hidden', '');
+    startBtn?.setAttribute('aria-expanded', String(next));
+  };
+  startBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMenu();
+  });
+  document.addEventListener('click', () => toggleMenu(false));
+  menu?.addEventListener('click', (e) => e.stopPropagation());
+
+  let z = 20;
+  /** @type {Set<string>} window ids that are minimized (hidden but still on taskbar) */
+  const minimized = new Set();
+
+  const isMobile = () => window.matchMedia('(max-width: 959px)').matches;
+  const allWindows = () => [...document.querySelectorAll('.desktop > .window')];
+  const visibleWindows = () => allWindows().filter((w) => !w.hidden);
+  const winTitle = (win) => win.dataset.title || win.querySelector('.title')?.textContent?.trim() || win.id;
+
+  const taskbarIds = () => {
+    const ids = new Set(visibleWindows().map((w) => w.id));
+    minimized.forEach((id) => ids.add(id));
+    return ids;
+  };
+
+  const syncTasks = () => {
+    if (!tasksEl) return;
+    const focused = document.querySelector('.desktop > .window.is-focus:not([hidden])');
+    const focusedId = focused?.id || '';
+    const want = taskbarIds();
+    const existing = new Map([...tasksEl.querySelectorAll('.task')].map((b) => [b.dataset.win, b]));
+
+    existing.forEach((btn, id) => {
+      if (!want.has(id)) btn.remove();
+    });
+
+    want.forEach((id) => {
+      const win = document.getElementById(id);
+      if (!win) return;
+      let btn = existing.get(id);
+      if (!btn) {
+        btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'task';
+        btn.dataset.win = id;
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          restore(win);
+        });
+        tasksEl.appendChild(btn);
+      }
+      btn.textContent = winTitle(win);
+      btn.classList.toggle('is-active', id === focusedId && !minimized.has(id));
+    });
+
+    document.querySelectorAll('.icon[data-win]').forEach((icon) => {
+      icon.classList.toggle('is-active', icon.dataset.win === focusedId);
+    });
+  };
+
+  const place = (win) => {
+    if (isMobile()) return;
+    const x = Number(win.dataset.x || 40);
+    const y = Number(win.dataset.y || 40);
+    const w = Number(win.dataset.w || 480);
+    win.style.position = 'absolute';
+    win.style.width = `${Math.min(w, window.innerWidth - 24)}px`;
+    win.style.left = `${x}px`;
+    win.style.top = `${y}px`;
+  };
+
+  const fitDesk = () => {
+    if (!desk || isMobile()) return;
+    let bottom = window.innerHeight - 40;
+    visibleWindows().forEach((win) => {
+      const top = parseFloat(win.style.top) || Number(win.dataset.y) || 0;
+      bottom = Math.max(bottom, top + win.offsetHeight + 56);
+    });
+    desk.style.minHeight = `${Math.min(bottom, 2400)}px`;
+  };
+
+  const applyMobileFront = (win) => {
+    allWindows().forEach((w) => w.classList.toggle('is-front', w === win && !w.hidden));
+  };
+
+  const setFocusChrome = (win) => {
+    allWindows().forEach((w) => w.classList.toggle('is-focus', w === win && !w.hidden));
+    if (isMobile() && win && !win.hidden) applyMobileFront(win);
+    else if (isMobile()) allWindows().forEach((w) => w.classList.remove('is-front'));
+    syncTasks();
+  };
+
+  const focusTopVisible = () => {
+    const remaining = visibleWindows();
+    if (!remaining.length) {
+      allWindows().forEach((w) => w.classList.remove('is-focus', 'is-front'));
+      syncTasks();
+      return;
+    }
+    const top = remaining.reduce((a, b) => (
+      parseInt(a.style.zIndex || '0', 10) >= parseInt(b.style.zIndex || '0', 10) ? a : b
+    ));
+    setFocusChrome(top);
+  };
+
+  const focus = (win, { flash = false } = {}) => {
+    if (!win || win.hidden) return;
+    z += 1;
+    win.style.zIndex = String(z);
+    setFocusChrome(win);
+    if (flash) {
+      win.classList.remove('focus-flash');
+      void win.offsetWidth;
+      win.classList.add('focus-flash');
+      setTimeout(() => win.classList.remove('focus-flash'), 700);
+    }
+  };
+
+  const openWin = (win, { flash = true } = {}) => {
+    if (!win) return;
+    minimized.delete(win.id);
+    win.hidden = false;
+    if (!isMobile()) place(win);
+    z += 1;
+    win.style.zIndex = String(z);
+    setFocusChrome(win);
+    if (flash) {
+      win.classList.remove('focus-flash');
+      void win.offsetWidth;
+      win.classList.add('focus-flash');
+      setTimeout(() => win.classList.remove('focus-flash'), 700);
+    }
+    if (!isMobile()) {
+      const rect = win.getBoundingClientRect();
+      if (rect.top < 8 || rect.bottom > window.innerHeight - 40) {
+        const y = window.scrollY + rect.top - 24;
+        window.scrollTo({ top: Math.max(0, y), behavior: prefersReduce ? 'auto' : 'smooth' });
+      }
+      fitDesk();
+    }
+    if (win.id === 'win-terminal') {
+      setTimeout(() => document.getElementById('term-input')?.focus(), 50);
+    }
+  };
+
+  const restore = (win) => openWin(win, { flash: true });
+
+  const closeWin = (win) => {
+    if (!win) return;
+    minimized.delete(win.id);
+    win.hidden = true;
+    win.classList.remove('is-focus', 'is-front');
+    focusTopVisible();
+  };
+
+  const minimizeWin = (win) => {
+    if (!win) return;
+    minimized.add(win.id);
+    win.hidden = true;
+    win.classList.remove('is-focus', 'is-front');
+    focusTopVisible();
+  };
+
+  const openById = (id) => {
+    const win = document.getElementById(id);
+    if (win) openWin(win);
+  };
+
+  const isExternalHttp = (el) => {
+    if (!(el instanceof HTMLAnchorElement)) return false;
+    const href = el.getAttribute('href') || '';
+    return /^https?:\/\//i.test(href) || href.startsWith('//');
+  };
+
+  /* Open-window triggers — never block real http(s) anchors */
+  document.addEventListener('click', (e) => {
+    const anchor = e.target.closest('a[href]');
+    if (anchor && isExternalHttp(anchor)) return;
+
+    const opener = e.target.closest('[data-win]');
+    if (!opener) return;
+    if (isExternalHttp(opener)) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    if (opener.closest('#start-menu')) toggleMenu(false);
+    openById(opener.dataset.win);
+  });
+
+  allWindows().forEach((win) => {
+    const bar = win.querySelector(':scope > .titlebar');
+    win.addEventListener('mousedown', (e) => {
+      if (e.target.closest('.controls')) return;
+      if (!win.hidden) focus(win);
+    });
+    win.addEventListener('touchstart', () => {
+      if (!win.hidden) focus(win);
+    }, { passive: true });
+
+    bar?.querySelector('.ctrl.x')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeWin(win);
+    });
+    bar?.querySelector('.ctrl.min')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      minimizeWin(win);
+    });
+
+    if (!bar) return;
+
+    let dragging = false;
+    let ox = 0;
+    let oy = 0;
+
+    const onMove = (clientX, clientY) => {
+      if (!dragging || isMobile()) return;
+      let nx = clientX - ox;
+      let ny = clientY - oy;
+      const maxX = Math.max(8, window.innerWidth - win.offsetWidth - 8);
+      const maxY = Math.max(8, window.innerHeight - 48);
+      nx = Math.min(Math.max(0, nx), maxX);
+      ny = Math.min(Math.max(0, ny), maxY);
+      win.style.left = `${nx}px`;
+      win.style.top = `${ny}px`;
+      win.dataset.x = String(Math.round(nx));
+      win.dataset.y = String(Math.round(ny));
+    };
+
+    const startDrag = (clientX, clientY) => {
+      if (isMobile()) {
+        focus(win);
+        return;
+      }
+      focus(win);
+      dragging = true;
+      win.classList.add('dragging');
+      const rect = win.getBoundingClientRect();
+      ox = clientX - rect.left;
+      oy = clientY - rect.top;
+    };
+
+    const end = () => {
+      if (!dragging) return;
+      dragging = false;
+      win.classList.remove('dragging');
+      fitDesk();
+    };
+
+    bar.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('.controls')) return;
+      e.preventDefault();
+      bar.setPointerCapture(e.pointerId);
+      startDrag(e.clientX, e.clientY);
+    });
+    bar.addEventListener('pointermove', (e) => onMove(e.clientX, e.clientY));
+    bar.addEventListener('pointerup', end);
+    bar.addEventListener('pointercancel', end);
+  });
+
+  /* Explorer: double-click row opens GitHub link */
+  document.querySelectorAll('#explorer-list tbody tr').forEach((row) => {
+    row.addEventListener('dblclick', () => {
+      const a = row.querySelector('a[href]');
+      if (a && isExternalHttp(a)) {
+        window.open(a.href, '_blank', 'noopener,noreferrer');
+      }
+    });
+    row.addEventListener('click', () => {
+      document.querySelectorAll('#explorer-list tr.is-selected').forEach((r) => r.classList.remove('is-selected'));
+      row.classList.add('is-selected');
+    });
+  });
+
+  const layout = () => {
+    if (!desk) return;
+    const mobile = isMobile();
+    desk.classList.toggle('is-mobile', mobile);
+    if (mobile) {
+      allWindows().forEach((win) => {
+        win.style.left = '';
+        win.style.top = '';
+        win.style.width = '';
+        win.style.position = '';
+      });
+      desk.style.minHeight = '';
+      const focused = document.querySelector('.desktop > .window.is-focus:not([hidden])')
+        || visibleWindows()[0];
+      if (focused) applyMobileFront(focused);
+      syncTasks();
+      return;
+    }
+    visibleWindows().forEach(place);
+    fitDesk();
+    syncTasks();
+  };
+
+  /* Never drive focus via location.hash (avoids page growth from hash scroll) */
+  if (location.hash) {
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+
+  const initialFocus = document.getElementById('win-hero') || visibleWindows()[0];
+  if (initialFocus) {
+    initialFocus.hidden = false;
+    setFocusChrome(initialFocus);
+  }
+  layout();
+  window.addEventListener('resize', layout);
+
+  /* —— Interactive Terminal —— */
+  const SIGNAL_TOML = `$ cat signal.toml
+[identity]
+handle  = "RiasJiDar"
+forge   = ["github", "gitlab"]
+
+[stack]
+lang    = ["rust", "python", "csharp"]
+focus   = ["agents", "mcp", "windows"]
+donate  = "monobank"
+
+$ ./ship --public
+Status::Mirrored ✓
+Status::Public ✓`;
+
+  const README_TXT = `RJ.OS :: README.txt
+====================
+Арсенал відкритих інструментів для автоматизації та AI.
+Handle: RiasJiDar
+Forge:  github.com/RiasJ1Dar
+Donate: send.monobank.ua/jar/4XsDm8vmF2
+
+Команди: help | ls | cat | donate | whoami | clear | neofetch`;
+
+  const termOut = document.getElementById('term-out');
+  const termForm = document.getElementById('term-form');
+  const termInput = document.getElementById('term-input');
+
+  const termPrint = (text) => {
+    if (!termOut) return;
+    termOut.textContent += (termOut.textContent ? '\n' : '') + text;
+    termOut.scrollTop = termOut.scrollHeight;
+  };
+
+  const termClear = () => {
+    if (termOut) termOut.textContent = '';
+  };
+
+  const initTerm = () => {
+    termClear();
+    termPrint(SIGNAL_TOML);
+    termPrint('');
+  };
+  initTerm();
+
+  const runCommand = (raw) => {
+    const line = raw.trim();
+    termPrint(`$ ${raw}`);
+    if (!line) return;
+
+    const parts = line.split(/\s+/);
+    const cmd = parts[0].toLowerCase();
+    const arg = parts.slice(1).join(' ');
+
+    switch (cmd) {
+      case 'help':
+        termPrint(`Доступні команди:
+  help       — цей список
+  clear      — очистити екран
+  ls         — список файлів
+  cat FILE   — показати файл (readme.txt, signal.toml)
+  donate     — банка Monobank
+  whoami     — хто я
+  neofetch   — про систему
+  about      — те саме, коротко
+  exit       — закрити термінал`);
+        break;
+      case 'clear':
+      case 'cls':
+        termClear();
+        break;
+      case 'ls':
+      case 'dir':
+        termPrint(`signal.toml
+readme.txt
+manifesto.exe
+projects/
+donate.url`);
+        break;
+      case 'cat': {
+        const file = arg.toLowerCase();
+        if (!file) {
+          termPrint('cat: вкажіть файл (напр. cat readme.txt)');
+        } else if (file === 'readme.txt' || file === 'readme') {
+          termPrint(README_TXT);
+        } else if (file === 'signal.toml' || file === 'signal') {
+          termPrint(`[identity]
+handle  = "RiasJiDar"
+forge   = ["github", "gitlab"]
+
+[stack]
+lang    = ["rust", "python", "csharp"]
+focus   = ["agents", "mcp", "windows"]
+donate  = "monobank"`);
+        } else {
+          termPrint(`cat: ${arg}: немає такого файла`);
+        }
+        break;
+      }
+      case 'donate':
+        termPrint('Банка Monobank:\nhttps://send.monobank.ua/jar/4XsDm8vmF2');
+        break;
+      case 'whoami':
+        termPrint('RiasJiDar');
+        break;
+      case 'neofetch':
+      case 'about':
+        termPrint(`         .-/+oossssoo+/-.
+     RJ.OS 0.5 / Win95 Deck
+     Host:    RiasJiDar
+     Shell:   signal.sh
+     Stack:   rust · python · csharp
+     Focus:   agents · mcp · windows
+     Donate:  monobank jar
+     Uptime:  since you opened this tab`);
+        break;
+      case 'exit':
+      case 'quit':
+        closeWin(document.getElementById('win-terminal'));
+        break;
+      default:
+        termPrint(`signal.sh: команду «${cmd}» не розпізнано. Введіть help.`);
+    }
+  };
+
+  termForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const val = termInput?.value ?? '';
+    if (termInput) termInput.value = '';
+    runCommand(val);
+  });
+
+  /* —— Shut Down —— */
+  const powerOff = () => {
+    toggleMenu(false);
+    if (!shutdownEl) return;
+    shutdownEl.hidden = false;
+  };
+  const powerOn = () => {
+    if (!shutdownEl || shutdownEl.hidden) return;
+    shutdownEl.hidden = true;
+  };
+  document.getElementById('btn-shutdown')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    powerOff();
+  });
+  shutdownEl?.addEventListener('click', powerOn);
+  document.addEventListener('keydown', (e) => {
+    if (shutdownEl && !shutdownEl.hidden) {
+      e.preventDefault();
+      powerOn();
+    }
   });
 })();
