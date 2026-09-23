@@ -315,19 +315,183 @@
     bar.addEventListener('pointercancel', end);
   });
 
-  /* Explorer: double-click row opens GitHub link */
-  document.querySelectorAll('#explorer-list tbody tr').forEach((row) => {
-    row.addEventListener('dblclick', () => {
+  /* Explorer: live public repos from GitHub API + static fallback */
+  const GH_OWNER = 'RiasJ1Dar';
+  const GH_REPOS_URL = `https://api.github.com/users/${GH_OWNER}/repos?per_page=100&sort=updated&type=owner`;
+  const RELEASE_CACHE_KEY = 'rj_gh_releases_v1';
+  const RELEASE_CACHE_TTL_MS = 60 * 60 * 1000;
+  const MAX_RELEASE_FETCH = 20;
+  const EXPLORER_PATH_DEFAULT = 'C:\\RiasJiDar\\Public\\';
+
+  const explorerList = document.getElementById('explorer-list');
+  const explorerTbody = document.getElementById('explorer-tbody')
+    || explorerList?.querySelector('tbody');
+  const explorerPath = document.getElementById('explorer-path');
+  const explorerFallbackHtml = explorerTbody ? explorerTbody.innerHTML : '';
+
+  const escHtml = (s) => String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+
+  const setExplorerPath = (msg) => {
+    if (explorerPath) explorerPath.textContent = msg;
+  };
+
+  const flashExplorerNote = (note, ms = 4000) => {
+    setExplorerPath(`${EXPLORER_PATH_DEFAULT}  [${note}]`);
+    setTimeout(() => setExplorerPath(EXPLORER_PATH_DEFAULT), ms);
+  };
+
+  const bindExplorerSelection = () => {
+    if (!explorerList || explorerList.dataset.bound === '1') return;
+    explorerList.dataset.bound = '1';
+    explorerList.addEventListener('click', (e) => {
+      const row = e.target.closest('tbody tr');
+      if (!row || !explorerList.contains(row)) return;
+      explorerList.querySelectorAll('tr.is-selected').forEach((r) => r.classList.remove('is-selected'));
+      row.classList.add('is-selected');
+    });
+    explorerList.addEventListener('dblclick', (e) => {
+      const row = e.target.closest('tbody tr');
+      if (!row || !explorerList.contains(row)) return;
       const a = row.querySelector('a[href]');
       if (a && isExternalHttp(a)) {
         window.open(a.href, '_blank', 'noopener,noreferrer');
       }
     });
-    row.addEventListener('click', () => {
-      document.querySelectorAll('#explorer-list tr.is-selected').forEach((r) => r.classList.remove('is-selected'));
-      row.classList.add('is-selected');
-    });
-  });
+  };
+
+  const isListedRepo = (repo) => {
+    if (!repo || typeof repo.name !== 'string' || !repo.name.trim()) return false;
+    if (repo.fork || repo.archived) return false;
+    const n = repo.name.toLowerCase();
+    if (n === 'riasj1dar.github.io') return false;
+    if (n === '.github') return false;
+    return true;
+  };
+
+  const loadReleaseCache = () => {
+    try {
+      const raw = sessionStorage.getItem(RELEASE_CACHE_KEY);
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      if (!data || typeof data.ts !== 'number' || !data.map) return null;
+      if (Date.now() - data.ts > RELEASE_CACHE_TTL_MS) return null;
+      return data.map;
+    } catch {
+      return null;
+    }
+  };
+
+  const saveReleaseCache = (map) => {
+    try {
+      sessionStorage.setItem(RELEASE_CACHE_KEY, JSON.stringify({ ts: Date.now(), map }));
+    } catch { /* ignore quota */ }
+  };
+
+  const fetchLatestRelease = async (name) => {
+    const url = `https://api.github.com/repos/${GH_OWNER}/${encodeURIComponent(name)}/releases/latest`;
+    try {
+      const res = await fetch(url, {
+        headers: { Accept: 'application/vnd.github+json' },
+      });
+      if (res.status === 404) return { ok: true, release: null };
+      if (!res.ok) return { ok: false, release: null };
+      const data = await res.json();
+      const tag = data.tag_name || data.name;
+      const htmlUrl = data.html_url;
+      if (!tag || !htmlUrl) return { ok: true, release: null };
+      return { ok: true, release: { tag: String(tag), html_url: String(htmlUrl) } };
+    } catch {
+      return { ok: false, release: null };
+    }
+  };
+
+  const resolveReleases = async (repos) => {
+    const cached = loadReleaseCache() || {};
+    const map = { ...cached };
+    const need = repos
+      .map((r) => r.name)
+      .filter((n) => !(n in map))
+      .slice(0, MAX_RELEASE_FETCH);
+    if (need.length) {
+      const results = await Promise.allSettled(need.map((n) => fetchLatestRelease(n)));
+      let wrote = false;
+      need.forEach((n, i) => {
+        const r = results[i];
+        if (r.status !== 'fulfilled' || !r.value || !r.value.ok) return;
+        map[n] = r.value.release;
+        wrote = true;
+      });
+      if (wrote) saveReleaseCache(map);
+    }
+    return map;
+  };
+
+  const renderExplorerRows = (repos, releases) => {
+    if (!explorerTbody) return;
+    if (!repos.length) {
+      explorerTbody.innerHTML = '<tr><td colspan="4">Немає публічних репозиторіїв</td></tr>';
+      return;
+    }
+    explorerTbody.innerHTML = repos.map((repo) => {
+      const name = escHtml(repo.name);
+      const href = escHtml(repo.html_url || `https://github.com/${GH_OWNER}/${repo.name}`);
+      const lang = escHtml(repo.language || '—');
+      const desc = escHtml((repo.description && String(repo.description).trim()) || 'публічний репозиторій');
+      const rel = releases[repo.name];
+      let releaseCell = '—';
+      if (rel && rel.tag && rel.html_url) {
+        releaseCell = `<a href="${escHtml(rel.html_url)}" target="_blank" rel="noopener noreferrer">${escHtml(rel.tag)}</a>`;
+      }
+      return `<tr><td><a href="${href}" target="_blank" rel="noopener noreferrer">${name}</a></td><td>${lang}</td><td>${desc}</td><td>${releaseCell}</td></tr>`;
+    }).join('');
+  };
+
+  const showExplorerLoading = () => {
+    if (!explorerTbody) return;
+    explorerTbody.innerHTML = '<tr><td colspan="4">Завантаження з GitHub…</td></tr>';
+    setExplorerPath(`${EXPLORER_PATH_DEFAULT}  [Завантаження з GitHub…]`);
+  };
+
+  const showExplorerFallback = (reason) => {
+    if (!explorerTbody) return;
+    explorerTbody.innerHTML = explorerFallbackHtml;
+    flashExplorerNote(reason || 'офлайн-список');
+  };
+
+  const loadExplorerFromGitHub = async () => {
+    if (!explorerTbody) return;
+    showExplorerLoading();
+    try {
+      const res = await fetch(GH_REPOS_URL, {
+        headers: { Accept: 'application/vnd.github+json' },
+      });
+      if (!res.ok) {
+        showExplorerFallback(res.status === 403 ? 'офлайн-список · rate limit' : 'офлайн-список');
+        return;
+      }
+      const data = await res.json();
+      if (!Array.isArray(data)) {
+        showExplorerFallback('офлайн-список');
+        return;
+      }
+      const repos = data
+        .filter(isListedRepo)
+        .sort((a, b) => String(b.pushed_at || '').localeCompare(String(a.pushed_at || '')));
+      const releases = await resolveReleases(repos);
+      renderExplorerRows(repos, releases);
+      setExplorerPath(EXPLORER_PATH_DEFAULT);
+    } catch {
+      showExplorerFallback('офлайн-список');
+    }
+  };
+
+  bindExplorerSelection();
+  loadExplorerFromGitHub();
+
 
   const layout = () => {
     if (!desk) return;
@@ -441,7 +605,7 @@ Donate: send.monobank.ua/jar/4XsDm8vmF2
         termPrint(`signal.toml
 readme.txt
 manifesto.exe
-projects/
+projects/   ← живий список з GitHub API (вікно Explorer)
 donate.url`);
         break;
       case 'cat': {

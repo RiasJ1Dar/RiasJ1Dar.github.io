@@ -243,6 +243,7 @@ a:hover{color:var(--magenta)}
 .list tr{cursor:default}
 .list tr.is-selected td{background:#000080;color:#fff}
 .list tr.is-selected a{color:#fff}
+.list td:nth-child(4){white-space:nowrap;font-family:var(--mono);font-size:11px}
 
 .faq details{margin:0 0 6px;padding:6px;background:#fff;border:1px solid var(--shadow)}
 .faq summary{cursor:pointer;font-weight:700}

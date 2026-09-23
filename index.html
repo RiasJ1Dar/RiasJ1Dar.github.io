@@ -144,23 +144,24 @@
         <span class="w95-btn fake">File</span>
         <span class="w95-btn fake">Edit</span>
         <span class="w95-btn fake">View</span>
-        <span class="mono path-bar inset">C:\RiasJiDar\Public\</span>
+        <span class="mono path-bar inset" id="explorer-path">C:\RiasJiDar\Public\</span>
       </div>
       <table class="list" id="explorer-list">
-        <thead><tr><th>Name</th><th>Type</th><th>Comment</th></tr></thead>
-        <tbody>
-          <tr><td><a href="https://github.com/RiasJ1Dar/agent-exchange" target="_blank" rel="noopener noreferrer">agent-exchange</a></td><td>Rust</td><td>MCP + SQLite пошта агентів</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/agent-desk" target="_blank" rel="noopener noreferrer">agent-desk</a></td><td>Python</td><td>людський перегляд NOW.md</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/desktop-remote-kit" target="_blank" rel="noopener noreferrer">desktop-remote-kit</a></td><td>Rust</td><td>трей · автозапуск · Telegram · update check</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/ota-sign" target="_blank" rel="noopener noreferrer">ota-sign</a></td><td>Rust</td><td>OTA · Ed25519 · SHA-512 блоби</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/asar-ua" target="_blank" rel="noopener noreferrer">asar-ua</a></td><td>Python</td><td>патчер локалі Electron asar</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/downloader" target="_blank" rel="noopener noreferrer">Downloader</a></td><td>Rust · C#</td><td>черга з resume · GPL-3.0</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/antigravity-ua" target="_blank" rel="noopener noreferrer">Antigravity UA</a></td><td>JS · C#</td><td>український UI IDE</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/umod-codex-gui" target="_blank" rel="noopener noreferrer">umod-codex-gui</a></td><td>Rust</td><td>Codex GUI + Entra proxy</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/umod-installer" target="_blank" rel="noopener noreferrer">umod-installer</a></td><td>Python</td><td>конфіг і loopback proxy</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/TwitchDropFarm" target="_blank" rel="noopener noreferrer">TwitchDropFarm</a></td><td>Python</td><td>Twitch Drops · Win/Linux/macOS v1.2</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/sweet-nethunter-kernel" target="_blank" rel="noopener noreferrer">sweet-nethunter-kernel</a></td><td>Kernel</td><td>NetHunter · GPL-2.0</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/szi-as-ota" target="_blank" rel="noopener noreferrer">szi-as-ota</a></td><td>OTA</td><td>пайплайн оновлень</td></tr>
+        <thead><tr><th>Name</th><th>Type</th><th>Comment</th><th>Release</th></tr></thead>
+        <tbody id="explorer-tbody">
+          <!-- Статичний fallback, якщо GitHub API недоступний -->
+          <tr><td><a href="https://github.com/RiasJ1Dar/agent-exchange" target="_blank" rel="noopener noreferrer">agent-exchange</a></td><td>Rust</td><td>MCP + SQLite пошта агентів</td><td>—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/agent-desk" target="_blank" rel="noopener noreferrer">agent-desk</a></td><td>Python</td><td>людський перегляд NOW.md</td><td>—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/desktop-remote-kit" target="_blank" rel="noopener noreferrer">desktop-remote-kit</a></td><td>Rust</td><td>трей · автозапуск · Telegram · update check</td><td>—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/ota-sign" target="_blank" rel="noopener noreferrer">ota-sign</a></td><td>Rust</td><td>OTA · Ed25519 · SHA-512 блоби</td><td>—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/asar-ua" target="_blank" rel="noopener noreferrer">asar-ua</a></td><td>Python</td><td>патчер локалі Electron asar</td><td>—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/downloader" target="_blank" rel="noopener noreferrer">Downloader</a></td><td>Rust · C#</td><td>черга з resume · GPL-3.0</td><td>—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/antigravity-ua" target="_blank" rel="noopener noreferrer">Antigravity UA</a></td><td>JS · C#</td><td>український UI IDE</td><td>—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/umod-codex-gui" target="_blank" rel="noopener noreferrer">umod-codex-gui</a></td><td>Rust</td><td>Codex GUI + Entra proxy</td><td>—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/umod-installer" target="_blank" rel="noopener noreferrer">umod-installer</a></td><td>Python</td><td>конфіг і loopback proxy</td><td>—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/TwitchDropFarm" target="_blank" rel="noopener noreferrer">TwitchDropFarm</a></td><td>Python</td><td>Twitch Drops · Win/Linux/macOS v1.2</td><td>—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/sweet-nethunter-kernel" target="_blank" rel="noopener noreferrer">sweet-nethunter-kernel</a></td><td>Kernel</td><td>NetHunter · GPL-2.0</td><td>—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/szi-as-ota" target="_blank" rel="noopener noreferrer">szi-as-ota</a></td><td>OTA</td><td>пайплайн оновлень</td><td>—</td></tr>
         </tbody>
       </table>
     </div>

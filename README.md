@@ -4,4 +4,6 @@
 
 **Сайт:** https://riasj1dar.github.io/
 
+Explorer (вікно «проєкти») підтягує живий список публічних репозиторіїв з GitHub API.
+
 Підтримати автора: https://send.monobank.ua/jar/4XsDm8vmF2
