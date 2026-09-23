@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RiasJ1Dar · Signal Deck</title>
+<meta name="description" content="Відкритий код Віктора: інструменти для агентів, завантаження, локалізація та ядра. Фіолетовий неон — інша вітрина портфоліо.">
+<meta name="theme-color" content="#09060f">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2309060f'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23e879f9' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="aurora" aria-hidden="true"></div>
+<div class="grid-floor" aria-hidden="true"></div>
+<div class="scanline" aria-hidden="true"></div>
+<div class="rail-progress" aria-hidden="true"></div>
+
+<a class="skip" href="#deck">До проєктів</a>
+
+<aside class="dock">
+  <a class="dock-mark" href="#" aria-label="Signal Deck">
+    <span class="pulse"></span>
+    <span class="mark-text">RJ</span>
+  </a>
+  <nav class="dock-nav" aria-label="Розділи">
+    <a href="#top" data-tip="Старт">◎</a>
+    <a href="#deck" data-tip="Проєкти">▦</a>
+    <a href="#stack" data-tip="Стек">⌘</a>
+    <a href="#linkup" data-tip="Звʼязок">↗</a>
+  </nav>
+  <div class="dock-meter" aria-hidden="true"><i></i></div>
+</aside>
+
+<header class="topbar" id="top">
+  <div class="callsign">
+    <span class="live">LIVE</span>
+    <span class="mono">CH · OPEN SOURCE</span>
+  </div>
+  <div class="top-links">
+    <a href="https://github.com/RiasJ1Dar/" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="https://gitlab.com/RiasJ1Dar" target="_blank" rel="noopener noreferrer">GitLab</a>
+    <a class="jar" href="https://send.monobank.ua/jar/4XsDm8vmF2" target="_blank" rel="noopener noreferrer">Банка Monobank</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <p class="kicker mono">signal deck · v2</p>
+    <h1>
+      <span class="line">Код, що</span>
+      <span class="line iris">тримає сигнал</span>
+    </h1>
+    <p class="lede">
+      Віктор · <strong>RiasJ1Dar</strong>. Rust, Python і Windows-інструменти для агентів,
+      завантажень і локалізації — без зайвої вітрини, лише те, що реально крутиться в репо.
+    </p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#deck">Відкрити палубу</a>
+      <a class="btn ghost" href="https://github.com/RiasJ1Dar/" target="_blank" rel="noopener noreferrer">Усі репозиторії</a>
+    </div>
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>RUST</span><span>PYTHON</span><span>MCP</span><span>AVALONIA</span><span>SQLITE</span>
+        <span>WINFORMS</span><span>SHELL</span><span>KERNEL</span><span>LOCALIZATION</span>
+        <span>RUST</span><span>PYTHON</span><span>MCP</span><span>AVALONIA</span><span>SQLITE</span>
+        <span>WINFORMS</span><span>SHELL</span><span>KERNEL</span><span>LOCALIZATION</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="deck" id="deck">
+    <div class="section-head">
+      <h2>Проєктна палуба</h2>
+      <p class="mono">8 публічних сигналів · дзеркала на GitLab</p>
+    </div>
+
+    <div class="bento">
+      <a class="tile tile-xl" href="https://github.com/RiasJ1Dar/agent-exchange" target="_blank" rel="noopener noreferrer" data-glow>
+        <div class="tile-meta">
+          <span class="chip">01</span>
+          <span class="chip soft">RUST · MCP · SQLITE</span>
+        </div>
+        <h3>agent-exchange</h3>
+        <p>Спільна пошта й замки для двох агентів над одним кодом. Стан у SQLite, для людини — NOW.md і read-only UI.</p>
+        <span class="tile-go">відкрити ↗</span>
+      </a>
+
+      <a class="tile tile-tall" href="https://github.com/RiasJ1Dar/downloader" target="_blank" rel="noopener noreferrer" data-glow>
+        <div class="tile-meta">
+          <span class="chip">02</span>
+          <span class="chip soft">RUST · C#</span>
+        </div>
+        <h3>Downloader</h3>
+        <p>Ядро-черга з resume після обривів. Avalonia, CLI і розширення через локальний IPC.</p>
+        <span class="tile-go">відкрити ↗</span>
+      </a>
+
+      <a class="tile" href="https://github.com/RiasJ1Dar/antigravity-ua" target="_blank" rel="noopener noreferrer" data-glow>
+        <div class="tile-meta">
+          <span class="chip">03</span>
+          <span class="chip soft">JS · C#</span>
+        </div>
+        <h3>Antigravity UA</h3>
+        <p>Український UI для IDE: словник, DOM-інжектор, інсталятор з відкатом.</p>
+        <span class="tile-go">↗</span>
+      </a>
+
+      <a class="tile" href="https://github.com/RiasJ1Dar/umod-codex-gui" target="_blank" rel="noopener noreferrer" data-glow>
+        <div class="tile-meta">
+          <span class="chip">04</span>
+          <span class="chip soft">RUST</span>
+        </div>
+        <h3>umod-codex-gui</h3>
+        <p>GUI, що запускає Codex CLI через локальний Entra-проксі.</p>
+        <span class="tile-go">↗</span>
+      </a>
+
+      <a class="tile" href="https://github.com/RiasJ1Dar/umod-installer" target="_blank" rel="noopener noreferrer" data-glow>
+        <div class="tile-meta">
+          <span class="chip">05</span>
+          <span class="chip soft">PYTHON · SHELL</span>
+        </div>
+        <h3>umod-installer</h3>
+        <p>Підготовка конфігурації, скриптів і token-proxy на loopback.</p>
+        <span class="tile-go">↗</span>
+      </a>
+
+      <a class="tile tile-wide" href="https://github.com/RiasJ1Dar/TwitchDropFarm" target="_blank" rel="noopener noreferrer" data-glow>
+        <div class="tile-meta">
+          <span class="chip">06</span>
+          <span class="chip soft">AUTOMATION</span>
+        </div>
+        <h3>TwitchDropFarm</h3>
+        <p>Автозбір Twitch Drops: сесії, розклад і стабільний прогін без ручного кліку.</p>
+        <span class="tile-go">відкрити ↗</span>
+      </a>
+
+      <a class="tile" href="https://github.com/RiasJ1Dar/sweet-nethunter-kernel" target="_blank" rel="noopener noreferrer" data-glow>
+        <div class="tile-meta">
+          <span class="chip">07</span>
+          <span class="chip soft">KERNEL · GPL-2.0</span>
+        </div>
+        <h3>sweet-nethunter-kernel</h3>
+        <p>Кастомне ядро NetHunter під пристрій sweet.</p>
+        <span class="tile-go">↗</span>
+      </a>
+
+      <a class="tile" href="https://github.com/RiasJ1Dar/szi-as-ota" target="_blank" rel="noopener noreferrer" data-glow>
+        <div class="tile-meta">
+          <span class="chip">08</span>
+          <span class="chip soft">OTA</span>
+        </div>
+        <h3>szi-as-ota</h3>
+        <p>OTA-пайплайн і допоміжні скрипти для оновлень.</p>
+        <span class="tile-go">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="stack" id="stack">
+    <div class="section-head">
+      <h2>Стек на радарі</h2>
+      <p class="mono">що реально з’являється в репо</p>
+    </div>
+    <ul class="radar">
+      <li><strong>Системне</strong><span>Rust · Shell · Kernel</span></li>
+      <li><strong>Агенти</strong><span>MCP · SQLite · JSON-RPC</span></li>
+      <li><strong>Десктоп</strong><span>Avalonia · WinForms · GUI</span></li>
+      <li><strong>Мови UI</strong><span>JS DOM · українська локалізація</span></li>
+      <li><strong>Доставка</strong><span>GitHub · GitLab mirrors · OTA</span></li>
+    </ul>
+  </section>
+
+  <section class="linkup" id="linkup">
+    <div class="linkup-card">
+      <p class="mono">out · channel</p>
+      <h2>Підтримати сигнал</h2>
+      <p>Донати через Monobank (та сама банка, що й GitHub Sponsor). Дзеркала відкритого коду — на GitLab.</p>
+      <div class="linkup-actions">
+        <a class="btn primary" href="https://send.monobank.ua/jar/4XsDm8vmF2" target="_blank" rel="noopener noreferrer">Monobank-банка</a>
+        <a class="btn ghost" href="https://gitlab.com/RiasJ1Dar" target="_blank" rel="noopener noreferrer">GitLab · RiasJ1Dar</a>
+        <a class="btn ghost" href="../">Класична вітрина</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span class="mono">© RiasJ1Dar</span>
+  <span class="mono dim">signal deck · purple neon</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
