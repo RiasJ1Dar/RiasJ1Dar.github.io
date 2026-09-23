@@ -18,7 +18,7 @@
     const lines = [
       'RJ.OS BIOS v0.4',
       'Checking memory …… OK',
-      'Mounting C:\\RiasJ1Dar …… OK',
+      'Mounting C:\\RiasJiDar …… OK',
       'Starting desktop shell …',
     ];
     let i = 0;
