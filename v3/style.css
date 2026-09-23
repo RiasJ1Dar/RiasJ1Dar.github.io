@@ -1,12 +1,13 @@
-/* Windows 95 / retro OS chrome — TypeSafe-adjacent */
+/* Win95 chrome on night-80s desktop (typesafe-adjacent, no full-screen VHS) */
 :root{
-  --teal:#008080;
+  --desk:#1e2a4a;
+  --desk2:#2a1f3d;
   --face:#c0c0c0;
   --hi:#ffffff;
   --shadow:#808080;
   --dk:#000000;
-  --title:#000080;
-  --title2:#1084d0;
+  --title:#3a1a5c;
+  --title2:#c45a9a;
   --pink:#f386a1;
   --magenta:#d45bb6;
   --ink:#000;
@@ -16,7 +17,11 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0;min-height:100vh;background:var(--teal);
+  margin:0;min-height:100vh;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(243,134,161,.18), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 90% 80%, rgba(80,120,200,.22), transparent 50%),
+    linear-gradient(160deg, var(--desk) 0%, var(--desk2) 55%, #152238 100%);
   font:400 14px/1.35 var(--font);color:var(--ink);
   overflow-x:hidden;padding-bottom:40px
 }
@@ -25,12 +30,6 @@ a:hover{color:var(--magenta)}
 .mono{font-family:var(--mono);font-size:12px}
 .skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;z-index:100;background:#ff0;padding:6px}
 
-/* bevel helpers */
-.raised{
-  border-top:2px solid var(--hi);border-left:2px solid var(--hi);
-  border-right:2px solid var(--dk);border-bottom:2px solid var(--dk);
-  background:var(--face)
-}
 .inset,.window-body .inset, .path-bar{
   border-top:2px solid var(--shadow);border-left:2px solid var(--shadow);
   border-right:2px solid var(--hi);border-bottom:2px solid var(--hi);
@@ -38,27 +37,94 @@ a:hover{color:var(--magenta)}
 }
 
 .desktop{position:relative;min-height:calc(100vh - 40px);padding:8px 8px 48px;overflow:visible}
+.desktop{min-height:1100px}
+.desktop.is-mobile{min-height:auto;display:flex;flex-direction:column;gap:12px;padding-top:12px}
+.desktop.is-mobile .window{position:relative!important;left:auto!important;top:auto!important;width:min(720px,96vw)!important;margin:0 auto}
+.desktop.is-mobile .icons{display:none}
+.desktop.is-mobile .window.dragging{position:absolute!important}
 
-.menubar{
-  display:none /* taskbar is enough; keep start menu */
+/* Desktop shortcuts — clear, clickable, not wallpaper */
+.icons{
+  position:absolute;top:16px;left:10px;z-index:8;
+  display:flex;flex-direction:column;gap:10px;width:88px
 }
-
-.icons{position:absolute;top:12px;left:12px;display:flex;flex-direction:column;gap:18px;z-index:1}
-.icon{width:72px;text-align:center;color:#fff;text-shadow:1px 1px 0 #000;font-size:11px}
-.icon-face{display:block;font-size:28px;margin-bottom:4px;filter:drop-shadow(1px 1px 0 #000)}
+.icon{
+  appearance:none;border:0;background:transparent;padding:6px 4px;margin:0;
+  width:88px;cursor:pointer;font:700 11px/1.2 var(--font);color:#fff;
+  text-align:center;border-radius:2px
+}
+.icon:hover,.icon:focus-visible{
+  outline:1px dotted #fff;outline-offset:1px;
+  background:rgba(196,90,154,.35)
+}
+.icon.is-active{
+  background:rgba(196,90,154,.55);
+  outline:1px dotted #fff
+}
+.icon-pic{
+  display:block;width:36px;height:36px;margin:0 auto 6px;
+  image-rendering:pixelated;
+  box-shadow:1px 1px 0 rgba(0,0,0,.55)
+}
+.icon-label{
+  display:block;text-shadow:1px 1px 0 #000;
+  word-break:break-word
+}
+.pic-readme{
+  background:
+    linear-gradient(#fff 0 0) center/28px 32px no-repeat,
+    linear-gradient(#c0c0c0 0 0);
+  border:1px solid #000;position:relative
+}
+.pic-readme::after{
+  content:"";position:absolute;left:6px;right:6px;top:8px;height:2px;background:#808080;
+  box-shadow:0 5px 0 #808080,0 10px 0 #808080,0 15px 0 #808080
+}
+.pic-manifesto{
+  background:linear-gradient(180deg,#f386a1,#c45a9a);border:1px solid #000;position:relative
+}
+.pic-manifesto::after{
+  content:"";position:absolute;left:8px;right:8px;top:10px;bottom:10px;
+  border:2px solid rgba(255,255,255,.85)
+}
+.pic-folder{
+  background:
+    linear-gradient(#e8c45a 0 0) 4px 10px / 28px 20px no-repeat,
+    linear-gradient(#d4a017 0 0) 4px 6px / 14px 8px no-repeat,
+    transparent;
+  border:0;box-shadow:none;filter:drop-shadow(1px 1px 0 #000)
+}
+.pic-monitor{
+  background:
+    linear-gradient(#1084d0 0 0) 6px 6px / 24px 16px no-repeat,
+    linear-gradient(#c0c0c0 0 0) 4px 4px / 28px 22px no-repeat,
+    linear-gradient(#808080 0 0) 12px 26px / 12px 6px no-repeat,
+    #c0c0c0;
+  border:1px solid #000
+}
+.pic-help{
+  background:#000080;border:1px solid #000;border-radius:50%;position:relative
+}
+.pic-help::after{
+  content:"?";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:#fff;font:700 22px/1 "Times New Roman",serif
+}
 
 .window{
   position:absolute;margin:0;width:min(640px,94vw);
   max-width:94vw;z-index:var(--z,2);
   border-top:2px solid var(--hi);border-left:2px solid var(--hi);
   border-right:2px solid var(--dk);border-bottom:2px solid var(--dk);
-  background:var(--face);box-shadow:2px 2px 0 rgba(0,0,0,.35)
+  background:var(--face);box-shadow:3px 3px 0 rgba(0,0,0,.4);
+  animation:winIn .28s ease-out both
 }
-.desktop{min-height:1100px}
-.desktop.is-mobile{min-height:auto;display:flex;flex-direction:column;gap:12px;padding-top:12px}
-.desktop.is-mobile .window{position:relative!important;left:auto!important;top:auto!important;width:min(720px,96vw)!important;margin:0 auto}
-.desktop.is-mobile .icons{display:none}
-.desktop.is-mobile .window.dragging{position:absolute!important}
+@keyframes winIn{
+  from{opacity:0;transform:translateY(8px) scale(.98)}
+  to{opacity:1;transform:none}
+}
+.window.is-focus{
+  box-shadow:3px 3px 0 rgba(0,0,0,.45), 0 0 0 1px rgba(243,134,161,.35)
+}
 
 .titlebar{
   display:flex;align-items:center;gap:8px;padding:3px 4px;
@@ -82,7 +148,16 @@ a:hover{color:var(--magenta)}
 .controls b.x::before{transform:rotate(45deg)}
 .controls b.x::after{transform:rotate(-45deg)}
 
-.window-body{padding:10px;background:var(--face)}
+.window-body{padding:10px;background:var(--face);position:relative}
+/* soft scanlines only inside window body */
+.window-body::after{
+  content:"";pointer-events:none;position:absolute;inset:0;opacity:.08;
+  background:repeating-linear-gradient(
+    to bottom,
+    transparent 0,transparent 2px,
+    rgba(0,0,0,.35) 3px
+  )
+}
 .pink-field .window-body{background:var(--pink)}
 .notepad h1{margin:6px 0 8px;font-size:clamp(1.6rem,5vw,2.4rem);letter-spacing:-.02em}
 .notepad p{margin:0 0 10px;max-width:46ch}
@@ -115,6 +190,11 @@ a:hover{color:var(--magenta)}
   margin:0;padding:8px;background:#000;color:#0f0;
   font:400 12px/1.4 var(--mono);overflow:auto;min-height:110px
 }
+.cursor{
+  display:inline-block;width:8px;height:12px;margin-left:2px;vertical-align:text-bottom;
+  background:#0f0;animation:blink 1s steps(1) infinite
+}
+@keyframes blink{50%{opacity:0}}
 
 .stats{display:grid;grid-template-columns:1fr;gap:6px}
 .stat{display:grid;grid-template-columns:1fr;gap:2px;padding:8px}
@@ -153,7 +233,7 @@ a:hover{color:var(--magenta)}
 .start-menu a{
   display:block;padding:8px 10px;color:#000;text-decoration:none;font-weight:600
 }
-.start-menu a:hover{background:var(--title);color:#fff}
+.start-menu a:hover{background:var(--title2);color:#fff}
 
 .taskbar{
   position:fixed;left:0;right:0;bottom:0;z-index:60;height:32px;
@@ -164,8 +244,8 @@ a:hover{color:var(--magenta)}
 }
 .tasks{display:flex;gap:4px;flex:1;overflow:auto}
 .task{
-  background:var(--face);color:#000;text-decoration:none;font-size:11px;font-weight:700;
-  padding:3px 10px;min-width:80px;text-align:center;
+  appearance:none;background:var(--face);color:#000;text-decoration:none;
+  font:700 11px/1.2 var(--font);padding:3px 10px;min-width:80px;text-align:center;cursor:pointer;
   border-top:2px solid var(--hi);border-left:2px solid var(--hi);
   border-right:2px solid var(--dk);border-bottom:2px solid var(--dk)
 }
@@ -173,102 +253,37 @@ a:hover{color:var(--magenta)}
   border-top:2px solid var(--dk);border-left:2px solid var(--dk);
   border-right:2px solid var(--hi);border-bottom:2px solid var(--hi)
 }
+.task.is-active{
+  border-top:2px solid var(--dk)!important;border-left:2px solid var(--dk)!important;
+  border-right:2px solid var(--hi)!important;border-bottom:2px solid var(--hi)!important;
+  background:#b0b0b0
+}
 .task-tray{
   border-top:2px solid var(--shadow);border-left:2px solid var(--shadow);
   border-right:2px solid var(--hi);border-bottom:2px solid var(--hi);
   padding:2px 8px;background:var(--face);min-width:54px;text-align:center
 }
 
-@media (max-width:700px){
-  .cols{grid-template-columns:1fr}
-  .list th:nth-child(3),.list td:nth-child(3){display:none}
-}
-
-/* --- VHS / 80s CRT vibe --- */
-.vhs-overlay,.scanlines,.crt-vignette{
-  pointer-events:none;position:fixed;inset:0;z-index:70
-}
-.vhs-overlay{
-  background:
-    repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 3px),
-    radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.35) 100%);
-  mix-blend-mode:multiply;opacity:.55;animation:vhsFlicker 4.5s infinite
-}
-.scanlines{
-  background:repeating-linear-gradient(
-    to bottom,
-    rgba(255,255,255,0) 0,
-    rgba(255,255,255,0) 1px,
-    rgba(0,0,0,.12) 2px,
-    rgba(0,0,0,.12) 3px
-  );
-  opacity:.25;z-index:71;animation:scanDrift 8s linear infinite
-}
-.crt-vignette{
-  box-shadow:inset 0 0 120px 40px rgba(0,0,0,.45);z-index:72;opacity:.7
-}
-@keyframes vhsFlicker{
-  0%,100%{opacity:.5} 92%{opacity:.5} 93%{opacity:.85} 94%{opacity:.4} 96%{opacity:.7} 97%{opacity:.5}
-}
-@keyframes scanDrift{to{transform:translateY(3px)}}
-
-.glitch{position:relative;display:inline-block}
-.glitch::before,.glitch::after{
-  content:attr(data-text);position:absolute;left:0;top:0;width:100%;overflow:hidden;
-  background:transparent;pointer-events:none
-}
-.glitch::before{
-  color:#0ff;z-index:-1;animation:glitchA 3.2s infinite linear alternate-reverse;
-  clip-path:inset(0 0 55% 0);transform:translate(-2px,0)
-}
-.glitch::after{
-  color:#f0f;z-index:-1;animation:glitchB 2.4s infinite linear alternate-reverse;
-  clip-path:inset(45% 0 0 0);transform:translate(2px,0)
-}
-@keyframes glitchA{
-  0%{clip-path:inset(20% 0 60% 0);transform:translate(-2px,0)}
-  20%{clip-path:inset(50% 0 20% 0);transform:translate(2px,1px)}
-  40%{clip-path:inset(10% 0 70% 0);transform:translate(-3px,-1px)}
-  60%{clip-path:inset(70% 0 5% 0);transform:translate(1px,0)}
-  80%{clip-path:inset(30% 0 40% 0);transform:translate(-1px,2px)}
-  100%{clip-path:inset(5% 0 80% 0);transform:translate(2px,0)}
-}
-@keyframes glitchB{
-  0%{clip-path:inset(60% 0 10% 0);transform:translate(2px,0)}
-  25%{clip-path:inset(15% 0 55% 0);transform:translate(-2px,1px)}
-  50%{clip-path:inset(40% 0 30% 0);transform:translate(3px,-1px)}
-  75%{clip-path:inset(80% 0 5% 0);transform:translate(-1px,0)}
-  100%{clip-path:inset(25% 0 50% 0);transform:translate(1px,1px)}
-}
-body.glitch-burst .desktop{animation:rgbShift .18s steps(2) 2}
-@keyframes rgbShift{
-  0%{filter:none}
-  50%{filter:hue-rotate(20deg) contrast(1.2) saturate(1.4);transform:translate(2px,0)}
-  100%{filter:none;transform:none}
-}
 .window.focus-flash > .titlebar{animation:titleFlash .35s linear 2}
 @keyframes titleFlash{
   0%,100%{filter:none}
-  50%{filter:brightness(1.6) saturate(1.4)}
+  50%{filter:brightness(1.35) saturate(1.25)}
 }
 
 .boot{
-  position:fixed;inset:0;z-index:90;background:#000;color:#0f0;
+  position:fixed;inset:0;z-index:90;background:#0a0e1a;color:#f386a1;
   display:flex;align-items:flex-start;padding:24px;font-family:var(--mono)
 }
 .boot[hidden],.boot.is-done{display:none!important}
 .boot-log{margin:0;white-space:pre-wrap;font-size:13px;line-height:1.4}
 
-.task{
-  font:700 11px/1.2 var(--font);cursor:pointer
-}
-.task.is-active{
-  border-top:2px solid var(--dk)!important;border-left:2px solid var(--dk)!important;
-  border-right:2px solid var(--hi)!important;border-bottom:2px solid var(--hi)!important;
-  background:#b0b0b0
+@media (max-width:700px){
+  .cols{grid-template-columns:1fr}
+  .list th:nth-child(3),.list td:nth-child(3){display:none}
 }
 
 @media (prefers-reduced-motion:reduce){
-  .vhs-overlay,.scanlines,.glitch::before,.glitch::after,body.glitch-burst .desktop{animation:none!important}
-  .glitch::before,.glitch::after{content:none}
+  .window,.cursor,.window.focus-flash > .titlebar{animation:none!important}
+  .window{opacity:1;transform:none}
+  .window-body::after{opacity:0}
 }
