@@ -368,6 +368,7 @@
     if (repo.fork || repo.archived) return false;
     const n = repo.name.toLowerCase();
     if (n === 'riasj1dar.github.io') return false;
+    if (n === 'riasj1dar') return false; // профільний README (special repo = username)
     if (n === '.github') return false;
     return true;
   };
