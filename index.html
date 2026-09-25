@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RiasJiDar · Win95 Deck</title>
-<meta name="description" content="Портфоліо RiasJiDar у стилі Windows 95 / retro OS — як typesafe.ai.">
+<meta name="description" content="Портфоліо RiasJiDar: відкриті інструменти для автоматизації та AI-агентів (Rust, Python, Node.js) у ретро-інтерфейсі Windows 95.">
 <meta name="theme-color" content="#1e2a4a">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231e2a4a'/%3E%3Crect x='4' y='6' width='24' height='20' fill='%23c0c0c0' stroke='%23000'/%3E%3Crect x='4' y='6' width='24' height='4' fill='%23c45a9a'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
@@ -48,7 +48,7 @@
       <span class="title">C:\RiasJiDar\README.txt — Notepad</span>
       <div class="controls">
         <button type="button" class="ctrl min" aria-label="Згорнути" title="Згорнути"></button>
-        <button type="button" class="ctrl max" aria-label="Розгорнути" title="Розгорнути" tabindex="-1"></button>
+        <button type="button" class="ctrl max" aria-label="Розгорнути" title="Розгорнути"></button>
         <button type="button" class="ctrl x" aria-label="Закрити" title="Закрити"></button>
       </div>
     </div>
@@ -65,12 +65,12 @@
     </div>
   </section>
 
-  <section class="window pink-field" id="win-manifesto" data-x="120" data-y="300" data-w="540" data-title="Manifesto" style="--z:2">
+  <section class="window pink-field" id="win-manifesto" data-x="120" data-y="396" data-w="540" data-title="Manifesto" style="--z:2">
     <div class="titlebar">
       <span class="title">Manifesto.exe</span>
       <div class="controls">
         <button type="button" class="ctrl min" aria-label="Згорнути" title="Згорнути"></button>
-        <button type="button" class="ctrl max" aria-label="Розгорнути" title="Розгорнути" tabindex="-1"></button>
+        <button type="button" class="ctrl max" aria-label="Розгорнути" title="Розгорнути"></button>
         <button type="button" class="ctrl x" aria-label="Закрити" title="Закрити"></button>
       </div>
     </div>
@@ -99,7 +99,7 @@
       <span class="title">Terminal — signal.sh</span>
       <div class="controls">
         <button type="button" class="ctrl min" aria-label="Згорнути" title="Згорнути"></button>
-        <button type="button" class="ctrl max" aria-label="Розгорнути" title="Розгорнути" tabindex="-1"></button>
+        <button type="button" class="ctrl max" aria-label="Розгорнути" title="Розгорнути"></button>
         <button type="button" class="ctrl x" aria-label="Закрити" title="Закрити"></button>
       </div>
     </div>
@@ -114,28 +114,28 @@
     </div>
   </section>
 
-  <section class="window" id="win-stats" data-x="620" data-y="36" data-w="300" data-title="System Monitor" style="--z:4">
+  <section class="window" id="win-stats" data-x="600" data-y="36" data-w="300" data-title="System Monitor" style="--z:4">
     <div class="titlebar">
       <span class="title">System Monitor</span>
       <div class="controls">
         <button type="button" class="ctrl min" aria-label="Згорнути" title="Згорнути"></button>
-        <button type="button" class="ctrl max" aria-label="Розгорнути" title="Розгорнути" tabindex="-1"></button>
+        <button type="button" class="ctrl max" aria-label="Розгорнути" title="Розгорнути"></button>
         <button type="button" class="ctrl x" aria-label="Закрити" title="Закрити"></button>
       </div>
     </div>
     <div class="window-body stats">
-      <div class="stat inset"><span class="mono">public</span><strong>8</strong><span>репозиторіїв</span></div>
+      <div class="stat inset"><span class="mono">public</span><strong id="stat-public">16</strong><span>репозиторіїв</span></div>
       <div class="stat inset"><span class="mono">forges</span><strong>2×</strong><span>GitHub · GitLab</span></div>
       <div class="stat inset"><span class="mono">focus</span><strong class="pink-t">agents</strong><span>MCP · IPC · OTA</span></div>
     </div>
   </section>
 
-  <section class="window" id="win-projects" data-x="120" data-y="620" data-w="720" data-title="Explorer" style="--z:5">
+  <section class="window" id="win-projects" data-x="120" data-y="680" data-w="720" data-title="Explorer" style="--z:5">
     <div class="titlebar">
       <span class="title">Explorer — C:\Repos\Public</span>
       <div class="controls">
         <button type="button" class="ctrl min" aria-label="Згорнути" title="Згорнути"></button>
-        <button type="button" class="ctrl max" aria-label="Розгорнути" title="Розгорнути" tabindex="-1"></button>
+        <button type="button" class="ctrl max" aria-label="Розгорнути" title="Розгорнути"></button>
         <button type="button" class="ctrl x" aria-label="Закрити" title="Закрити"></button>
       </div>
     </div>
@@ -150,6 +150,10 @@
         <thead><tr><th>Name</th><th>Type</th><th>Comment</th><th>Release</th></tr></thead>
         <tbody id="explorer-tbody">
           <!-- Статичний fallback, якщо GitHub API недоступний -->
+          <tr><td><a href="https://github.com/RiasJ1Dar/glm-orchestrator-public" target="_blank" rel="noopener noreferrer">glm-orchestrator</a></td><td>Node.js</td><td>MCP-оркестратор GLM-5.2 · вікно спостереження</td><td>—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/music-extractor" target="_blank" rel="noopener noreferrer">music-extractor</a></td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/mcp-status" target="_blank" rel="noopener noreferrer">mcp-status</a></td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/kit-packager" target="_blank" rel="noopener noreferrer">kit-packager</a></td><td>—</td><td>—</td><td>—</td></tr>
           <tr><td><a href="https://github.com/RiasJ1Dar/agent-exchange" target="_blank" rel="noopener noreferrer">agent-exchange</a></td><td>Rust</td><td>MCP + SQLite пошта агентів</td><td>—</td></tr>
           <tr><td><a href="https://github.com/RiasJ1Dar/agent-desk" target="_blank" rel="noopener noreferrer">agent-desk</a></td><td>Python</td><td>людський перегляд NOW.md</td><td>—</td></tr>
           <tr><td><a href="https://github.com/RiasJ1Dar/desktop-remote-kit" target="_blank" rel="noopener noreferrer">desktop-remote-kit</a></td><td>Rust</td><td>трей · автозапуск · Telegram · update check</td><td>—</td></tr>
@@ -167,12 +171,12 @@
     </div>
   </section>
 
-  <section class="window" id="win-faq" data-x="680" data-y="300" data-w="420" data-title="FAQ.hlp" style="--z:6">
+  <section class="window" id="win-faq" data-x="680" data-y="396" data-w="420" data-title="FAQ.hlp" style="--z:6">
     <div class="titlebar">
       <span class="title">FAQ.hlp — Help</span>
       <div class="controls">
         <button type="button" class="ctrl min" aria-label="Згорнути" title="Згорнути"></button>
-        <button type="button" class="ctrl max" aria-label="Розгорнути" title="Розгорнути" tabindex="-1"></button>
+        <button type="button" class="ctrl max" aria-label="Розгорнути" title="Розгорнути"></button>
         <button type="button" class="ctrl x" aria-label="Закрити" title="Закрити"></button>
       </div>
     </div>
@@ -180,11 +184,12 @@
       <div class="faq inset">
         <details open>
           <summary>Що це за сторінка?</summary>
-          <p>Варіант портфоліо в ретро OS / Windows 95 мові typesafe.ai: вікна, bevel, термінал. Контент — твої публічні репо.</p>
+          <p>Портфоліо у вигляді робочого столу Windows 95: вікна можна тягати, згортати й розгортати, у Terminal є команди (<code>help</code>). Explorer показує живий список публічних репозиторіїв.</p>
         </details>
         <details>
           <summary>Де інші варіанти?</summary>
-                  </details>
+          <p>Попередні дизайни лишились в архіві: <a href="v1/">v1 — технічна вітрина</a> і <a href="v2/">v2 — неоновий Signal Deck</a>.</p>
+        </details>
         <details>
           <summary>Чому немає .github у списку?</summary>
           <p>Це community health files, не продукт.</p>
@@ -210,36 +215,36 @@
   <div class="start-side">RiasJiDar</div>
   <div class="start-body">
     <details class="start-group" open>
-      <summary><span class="sm-ico" aria-hidden="true">📁</span> Programs</summary>
+      <summary><span class="sm-ico"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 4h5l1 1h8v9H1z" fill="#e8c45a" stroke="#000"/><path d="M1 6h14" stroke="#d4a017"/></svg></span> Programs</summary>
       <ul>
-        <li><button type="button" data-win="win-projects"><span class="sm-ico" aria-hidden="true">🗂</span> Explorer</button></li>
-        <li><button type="button" data-win="win-terminal"><span class="sm-ico" aria-hidden="true">💻</span> Terminal</button></li>
-        <li><button type="button" data-win="win-stats"><span class="sm-ico" aria-hidden="true">📊</span> System Monitor</button></li>
+        <li><button type="button" data-win="win-projects"><span class="sm-ico"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 3h5l1 1h8v10H1z" fill="#d4a017" stroke="#000"/><path d="M3 7h12l-2 7H1z" fill="#e8c45a" stroke="#000"/></svg></span> Explorer</button></li>
+        <li><button type="button" data-win="win-terminal"><span class="sm-ico"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="2" width="14" height="11" fill="#000" stroke="#000"/><path d="M3 5l2 2-2 2M7 9h4" stroke="#0f0" fill="none"/></svg></span> Terminal</button></li>
+        <li><button type="button" data-win="win-stats"><span class="sm-ico"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="1" width="14" height="11" fill="#c0c0c0" stroke="#000"/><rect x="3" y="3" width="10" height="7" fill="#1084d0"/><rect x="5" y="12" width="6" height="3" fill="#808080" stroke="#000"/></svg></span> System Monitor</button></li>
       </ul>
     </details>
     <details class="start-group">
-      <summary><span class="sm-ico" aria-hidden="true">📄</span> Documents</summary>
+      <summary><span class="sm-ico"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 1h7l3 3v11H3z" fill="#fff" stroke="#000"/><path d="M5 6h6M5 8h6M5 10h6M5 12h4" stroke="#808080"/></svg></span> Documents</summary>
       <ul>
-        <li><button type="button" data-win="win-hero"><span class="sm-ico" aria-hidden="true">📝</span> README.txt</button></li>
-        <li><button type="button" data-win="win-manifesto"><span class="sm-ico" aria-hidden="true">📜</span> Manifesto.exe</button></li>
+        <li><button type="button" data-win="win-hero"><span class="sm-ico"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 1h7l3 3v11H3z" fill="#fff" stroke="#000"/><path d="M5 6h6M5 8h6M5 10h6M5 12h4" stroke="#808080"/></svg></span> README.txt</button></li>
+        <li><button type="button" data-win="win-manifesto"><span class="sm-ico"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="#f386a1" stroke="#000"/><rect x="5" y="5" width="6" height="6" fill="none" stroke="#fff" stroke-width="2"/></svg></span> Manifesto.exe</button></li>
       </ul>
     </details>
     <details class="start-group">
-      <summary><span class="sm-ico" aria-hidden="true">❓</span> Help</summary>
+      <summary><span class="sm-ico"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#000080" stroke="#000"/><path d="M6 6a2 2 0 1 1 3 2c-1 .5-1 1-1 2M8 12v1" stroke="#fff" stroke-width="1.6" fill="none"/></svg></span> Help</summary>
       <ul>
-        <li><button type="button" data-win="win-faq"><span class="sm-ico" aria-hidden="true">❔</span> FAQ.hlp</button></li>
+        <li><button type="button" data-win="win-faq"><span class="sm-ico"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#000080" stroke="#000"/><path d="M6 6a2 2 0 1 1 3 2c-1 .5-1 1-1 2M8 12v1" stroke="#fff" stroke-width="1.6" fill="none"/></svg></span> FAQ.hlp</button></li>
       </ul>
     </details>
     <ul class="start-extras">
-      <li><a href="https://send.monobank.ua/jar/4XsDm8vmF2" target="_blank" rel="noopener noreferrer"><span class="sm-ico" aria-hidden="true">💰</span> Підтримати (Monobank)…</a></li>
+      <li><a href="https://send.monobank.ua/jar/4XsDm8vmF2" target="_blank" rel="noopener noreferrer"><span class="sm-ico"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="5" width="14" height="9" fill="#3cb043" stroke="#000"/><circle cx="8" cy="9.5" r="2.5" fill="#f2c230" stroke="#000"/><path d="M3 3h10v2H3z" fill="#2e8b36" stroke="#000"/></svg></span> Підтримати (Monobank)…</a></li>
     </ul>
     <ul class="start-extras start-power">
-      <li><button type="button" id="btn-shutdown"><span class="sm-ico" aria-hidden="true">🚪</span> Shut Down…</button></li>
+      <li><button type="button" id="btn-shutdown"><span class="sm-ico"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="1" width="10" height="14" fill="#808080" stroke="#000"/><path d="M8 3v5" stroke="#e03c3c" stroke-width="2"/><path d="M5.5 6a3.5 3.5 0 1 0 5 0" stroke="#e03c3c" stroke-width="1.6" fill="none"/></svg></span> Shut Down…</button></li>
     </ul>
   </div>
 </div>
 
-<div class="shutdown" id="shutdown" hidden role="dialog" aria-modal="true" aria-labelledby="shutdown-msg">
+<div class="shutdown" id="shutdown" hidden tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="shutdown-msg">
   <div class="shutdown-crt" aria-hidden="true"></div>
   <p class="shutdown-msg mono" id="shutdown-msg">Тепер ви можете безпечно вимкнути свій комп'ютер</p>
   <p class="shutdown-hint mono">Клацніть або натисніть будь-яку клавішу, щоб увімкнути знову</p>
