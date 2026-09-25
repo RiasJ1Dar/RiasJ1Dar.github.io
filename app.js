@@ -117,13 +117,14 @@
   };
 
   const place = (win) => {
-    if (isMobile()) return;
+    if (isMobile() || win.classList.contains('is-max')) return;
     const x = Number(win.dataset.x || 40);
     const y = Number(win.dataset.y || 40);
     const w = Number(win.dataset.w || 480);
     win.style.position = 'absolute';
-    win.style.width = `${Math.min(w, window.innerWidth - 24)}px`;
-    win.style.left = `${x}px`;
+    const width = Math.min(w, window.innerWidth - 24);
+    win.style.width = `${width}px`;
+    win.style.left = `${Math.max(8, Math.min(x, window.innerWidth - width - 16))}px`;
     win.style.top = `${y}px`;
   };
 
@@ -203,6 +204,24 @@
 
   const restore = (win) => openWin(win, { flash: true });
 
+  const toggleMax = (win) => {
+    if (!win || isMobile()) return;
+    const btn = win.querySelector('.ctrl.max');
+    if (win.classList.toggle('is-max')) {
+      win.style.left = '8px';
+      win.style.top = `${Math.round(window.scrollY) + 8}px`;
+      win.style.width = `${window.innerWidth - 32}px`;
+      btn?.setAttribute('aria-label', 'Відновити');
+      btn?.setAttribute('title', 'Відновити');
+    } else {
+      btn?.setAttribute('aria-label', 'Розгорнути');
+      btn?.setAttribute('title', 'Розгорнути');
+      place(win);
+    }
+    focus(win);
+    fitDesk();
+  };
+
   const closeWin = (win) => {
     if (!win) return;
     minimized.delete(win.id);
@@ -259,6 +278,13 @@
       e.stopPropagation();
       closeWin(win);
     });
+    bar?.querySelector('.ctrl.max')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMax(win);
+    });
+    bar?.addEventListener('dblclick', (e) => {
+      if (!e.target.closest('.controls')) toggleMax(win);
+    });
     bar?.querySelector('.ctrl.min')?.addEventListener('click', (e) => {
       e.stopPropagation();
       minimizeWin(win);
@@ -290,6 +316,7 @@
         return;
       }
       focus(win);
+      if (win.classList.contains('is-max')) toggleMax(win);
       dragging = true;
       win.classList.add('dragging');
       const rect = win.getBoundingClientRect();
@@ -484,6 +511,8 @@
         .sort((a, b) => String(b.pushed_at || '').localeCompare(String(a.pushed_at || '')));
       const releases = await resolveReleases(repos);
       renderExplorerRows(repos, releases);
+      const statPublic = document.getElementById('stat-public');
+      if (statPublic) statPublic.textContent = String(repos.length);
       setExplorerPath(EXPLORER_PATH_DEFAULT);
     } catch {
       showExplorerFallback('офлайн-список');
@@ -669,10 +698,12 @@ donate  = "monobank"`);
     toggleMenu(false);
     if (!shutdownEl) return;
     shutdownEl.hidden = false;
+    shutdownEl.focus();
   };
   const powerOn = () => {
     if (!shutdownEl || shutdownEl.hidden) return;
     shutdownEl.hidden = true;
+    startBtn?.focus();
   };
   document.getElementById('btn-shutdown')?.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -680,6 +711,11 @@ donate  = "monobank"`);
   });
   shutdownEl?.addEventListener('click', powerOn);
   document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu && !menu.hasAttribute('hidden')) {
+      toggleMenu(false);
+      startBtn?.focus();
+      return;
+    }
     if (shutdownEl && !shutdownEl.hidden) {
       e.preventDefault();
       powerOn();

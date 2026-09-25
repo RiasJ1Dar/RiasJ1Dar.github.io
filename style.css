@@ -7,9 +7,9 @@
   --shadow:#808080;
   --dk:#000000;
   --title:#3a1a5c;
-  --title2:#c45a9a;
-  --title-bright:#e85aad;
-  --title-bright2:#9b4dff;
+  --title2:#a8408a;
+  --title-bright:#c2388c;
+  --title-bright2:#8a3ce8;
   --title-idle:#3a3a48;
   --title-idle2:#5a5a6a;
   --pink:#f386a1;
@@ -20,6 +20,7 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{
   margin:0;min-height:100vh;
   background:
@@ -32,6 +33,10 @@ body{
 a{color:#00f}
 a:hover{color:var(--magenta)}
 .mono{font-family:var(--mono);font-size:12px}
+:where(button,a,summary,input,[tabindex]):focus-visible{outline:1px dotted #000;outline-offset:-4px}
+.taskbar :focus-visible,.w95-btn:focus-visible{outline-offset:-5px}
+.start-menu :focus-visible{outline:1px dotted #fff;outline-offset:-3px}
+.controls .ctrl:focus-visible{outline:1px dotted #fff;outline-offset:1px}
 .skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;z-index:100;background:#ff0;padding:6px}
 
 .inset,.window-body .inset, .path-bar{
@@ -137,7 +142,7 @@ a:hover{color:var(--magenta)}
 .titlebar{
   display:flex;align-items:center;gap:8px;padding:3px 4px;
   background:linear-gradient(90deg,var(--title-idle),var(--title-idle2));
-  color:#c8c8d0;font-weight:700;font-size:12px;user-select:none;cursor:grab;touch-action:none
+  color:#ececf2;font-weight:700;font-size:12px;user-select:none;cursor:grab;touch-action:none
 }
 .window.is-focus > .titlebar{
   background:linear-gradient(90deg,var(--title-bright),var(--title-bright2) 55%,var(--title2));
@@ -147,7 +152,7 @@ a:hover{color:var(--magenta)}
 .title{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .controls{display:flex;gap:2px}
 .controls .ctrl{
-  appearance:none;display:block;width:16px;height:14px;padding:0;margin:0;
+  appearance:none;display:block;width:20px;height:18px;padding:0;margin:0;
   background:var(--face);cursor:pointer;position:relative;
   border-top:1px solid var(--hi);border-left:1px solid var(--hi);
   border-right:1px solid var(--dk);border-bottom:1px solid var(--dk)
@@ -164,8 +169,14 @@ a:hover{color:var(--magenta)}
   border:1px solid #000;border-top-width:2px
 }
 .controls .ctrl.x::before,.controls .ctrl.x::after{
-  content:"";position:absolute;left:3px;right:3px;top:6px;height:2px;background:#000
+  content:"";position:absolute;left:4px;right:4px;top:7px;height:2px;background:#000
 }
+.window.is-max .controls .ctrl.max::before{left:6px;top:3px;right:3px;bottom:6px}
+.window.is-max .controls .ctrl.max::after{
+  content:"";position:absolute;left:3px;top:6px;right:6px;bottom:3px;
+  border:1px solid #000;border-top-width:2px;background:var(--face)
+}
+@media (pointer:coarse){.controls{gap:4px}.controls .ctrl{width:28px;height:24px}}
 .controls .ctrl.x::before{transform:rotate(45deg)}
 .controls .ctrl.x::after{transform:rotate(-45deg)}
 
@@ -189,13 +200,21 @@ a:hover{color:var(--magenta)}
   border-top:2px solid var(--hi);border-left:2px solid var(--hi);
   border-right:2px solid var(--dk);border-bottom:2px solid var(--dk);cursor:pointer
 }
-.w95-btn:active,.w95-btn:hover{
+.w95-btn:hover{background:#d4d4d4}
+.w95-btn:active{
   border-top:2px solid var(--dk);border-left:2px solid var(--dk);
   border-right:2px solid var(--hi);border-bottom:2px solid var(--hi)
 }
 .w95-btn.fake{pointer-events:none;opacity:.9}
 .w95-btn.start{font-weight:700;padding:3px 10px;display:inline-flex;align-items:center;gap:4px}
-.w95-btn.start::before{content:"🗔";font-size:12px}
+.w95-btn.start::before{
+  content:"";width:14px;height:12px;flex:0 0 14px;
+  background:
+    linear-gradient(#e03c3c 0 0) 0 0/6px 5px no-repeat,
+    linear-gradient(#3cb043 0 0) 8px 0/6px 5px no-repeat,
+    linear-gradient(#2f6fe0 0 0) 0 7px/6px 5px no-repeat,
+    linear-gradient(#f2c230 0 0) 8px 7px/6px 5px no-repeat
+}
 
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
 .cols .inset,.stats .inset{padding:8px}
@@ -291,9 +310,9 @@ a:hover{color:var(--magenta)}
   display:flex;align-items:center;gap:8px
 }
 .sm-ico{
-  display:inline-flex;width:1.25em;justify-content:center;flex:0 0 1.25em;
-  font-style:normal;line-height:1
+  display:inline-flex;width:16px;height:16px;justify-content:center;align-items:center;flex:0 0 16px
 }
+.sm-ico svg{width:16px;height:16px;shape-rendering:crispEdges}
 .start-menu button:hover,
 .start-menu a:hover{background:var(--title2);color:#fff}
 .start-extras{border-top:1px solid var(--hi);margin-top:2px;padding-top:4px}
@@ -310,7 +329,7 @@ a:hover{color:var(--magenta)}
 .tasks{display:flex;gap:4px;flex:1;overflow:auto}
 .task{
   appearance:none;background:var(--face);color:#000;text-decoration:none;
-  font:700 11px/1.2 var(--font);padding:3px 10px;min-width:80px;max-width:160px;
+  font:700 11px/1.2 var(--font);padding:3px 10px;min-width:80px;max-width:160px;min-height:24px;
   text-align:left;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   border-style:outset;border-width:2px;border-color:var(--hi) var(--dk) var(--dk) var(--hi)
 }
@@ -360,7 +379,7 @@ a:hover{color:var(--magenta)}
   animation:msgIn .4s ease-out .35s both
 }
 .shutdown-hint{
-  position:relative;z-index:1;margin:0;font-size:11px;color:#666;
+  position:relative;z-index:1;margin:0;font-size:11px;color:#9a9a9a;
   animation:msgIn .3s ease-out .7s both
 }
 @keyframes crtOff{
@@ -385,13 +404,14 @@ a:hover{color:var(--magenta)}
     flex-direction:row;flex-wrap:wrap;width:auto;gap:8px;
     margin-bottom:8px
   }
-  .desktop .icon{width:72px}
+  .desktop .icon{width:80px;min-height:44px}
+  .desktop .icon-label{word-break:normal;white-space:nowrap}
+  /* на телефоні вікно й так на всю ширину */
+  .controls .ctrl.max{display:none}
   .desktop .window{
-    position:absolute!important;
-    left:4px!important;right:4px!important;top:8px!important;
+    position:relative!important;
+    left:auto!important;top:auto!important;
     width:auto!important;max-width:none!important;
-    max-height:calc(100vh - 56px);
-    overflow:auto;
     display:none
   }
   .desktop .window.is-front{
