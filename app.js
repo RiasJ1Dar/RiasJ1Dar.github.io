@@ -14,7 +14,9 @@
 
   const boot = document.getElementById('boot');
   const bootLog = document.getElementById('boot-log');
-  if (boot && bootLog && !prefersReduce) {
+  let booted = false;
+  try { booted = sessionStorage.getItem('rj_booted') === '1'; sessionStorage.setItem('rj_booted', '1'); } catch { /* private mode */ }
+  if (boot && bootLog && !prefersReduce && !booted) {
     const lines = [
       'RJ.OS BIOS v0.5',
       'Checking memory …… OK',
@@ -50,8 +52,10 @@
   const toggleMenu = (open) => {
     if (!menu) return;
     const next = open ?? menu.hasAttribute('hidden');
-    if (next) menu.removeAttribute('hidden');
-    else menu.setAttribute('hidden', '');
+    if (next) {
+      menu.removeAttribute('hidden');
+      menu.querySelector('summary, button, a')?.focus();
+    } else menu.setAttribute('hidden', '');
     startBtn?.setAttribute('aria-expanded', String(next));
   };
   startBtn?.addEventListener('click', (e) => {
@@ -240,6 +244,8 @@
     }
     if (win.id === 'win-terminal') {
       setTimeout(() => document.getElementById('term-input')?.focus(), 50);
+    } else {
+      win.focus({ preventScroll: true });
     }
   };
 
@@ -263,8 +269,14 @@
     fitDesk();
   };
 
+  const returnFocus = (win) => {
+    if (!win.contains(document.activeElement)) return;
+    document.querySelector(`.icon[data-win="${win.id}"]`)?.focus();
+  };
+
   const closeWin = (win) => {
     if (!win) return;
+    returnFocus(win);
     minimized.delete(win.id);
     win.hidden = true;
     win.classList.remove('is-focus', 'is-front');
@@ -273,6 +285,7 @@
 
   const minimizeWin = (win) => {
     if (!win) return;
+    returnFocus(win);
     minimized.add(win.id);
     win.hidden = true;
     win.classList.remove('is-focus', 'is-front');
@@ -307,6 +320,8 @@
 
   allWindows().forEach((win) => {
     const bar = win.querySelector(':scope > .titlebar');
+    win.setAttribute('aria-label', winTitle(win));
+    win.tabIndex = -1;
     win.addEventListener('mousedown', (e) => {
       if (e.target.closest('.controls')) return;
       if (!win.hidden) focus(win);
@@ -551,11 +566,10 @@
         || (repo.description && String(repo.description).trim())
         || 'публічний репозиторій');
       const rel = releases[repo.name];
-      let releaseCell = '—';
-      if (rel && rel.tag && rel.html_url) {
-        releaseCell = `<a href="${escHtml(rel.html_url)}" target="_blank" rel="noopener noreferrer">${escHtml(rel.tag)}</a>`;
-      }
-      return `<tr><td><a href="${href}" target="_blank" rel="noopener noreferrer">${name}</a></td><td>${lang}</td><td>${desc}</td><td>${releaseCell}</td></tr>`;
+      const releaseCell = (rel && rel.tag && rel.html_url)
+        ? `<td><a href="${escHtml(rel.html_url)}" target="_blank" rel="noopener noreferrer">${escHtml(rel.tag)}</a></td>`
+        : '<td class="no-rel">—</td>';
+      return `<tr><td><a href="${href}" target="_blank" rel="noopener noreferrer">${name}</a></td><td>${lang}</td><td>${desc}</td>${releaseCell}</tr>`;
     }).join('');
   };
 
@@ -632,7 +646,14 @@
     syncTasks();
   };
 
-  /* Never drive focus via location.hash (avoids page growth from hash scroll) */
+  /* Deep links (#repos, #terminal, …) відкривають вікно один раз; hash одразу
+     прибираємо, щоб браузер не скролив сторінку до секції */
+  const HASH_WINDOWS = {
+    readme: 'win-hero', manifesto: 'win-manifesto', repos: 'win-projects', projects: 'win-projects',
+    terminal: 'win-terminal', monitor: 'win-stats', faq: 'win-faq',
+  };
+  const hashKey = decodeURIComponent(location.hash.slice(1)).toLowerCase();
+  const deepLinkId = HASH_WINDOWS[hashKey] || (hashKey.startsWith('win-') ? hashKey : '');
   if (location.hash) {
     history.replaceState(null, '', location.pathname + location.search);
   }
@@ -644,6 +665,7 @@
   }
   layout();
   window.addEventListener('resize', layout);
+  if (deepLinkId && document.getElementById(deepLinkId)) openById(deepLinkId);
 
   /* —— Interactive Terminal —— */
   const SIGNAL_TOML = `$ cat signal.toml
