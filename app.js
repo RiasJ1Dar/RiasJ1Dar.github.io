@@ -128,6 +128,47 @@
     win.style.top = `${y}px`;
   };
 
+  /* Initial layout: push windows down until none overlap (narrow desktops clamp x).
+     Stops once the visitor drags a window — their layout wins. */
+  let userMoved = false;
+  const autoIds = new Set(allWindows().filter((w) => !w.hidden).map((w) => w.id));
+  const arrange = () => {
+    if (userMoved || isMobile()) return;
+    const placed = [];
+    visibleWindows()
+      .filter((win) => autoIds.has(win.id))
+      .map((win) => {
+        if (!win.dataset.y0) win.dataset.y0 = win.dataset.y || '40';
+        win.dataset.y = win.dataset.y0;
+        return win;
+      })
+      /* data-order: менш важливі вікна (FAQ) ставимо останніми, щоб не витісняли Explorer */
+      .sort((a, b) => (Number(a.dataset.order || 0) - Number(b.dataset.order || 0))
+        || (Number(a.dataset.y0) - Number(b.dataset.y0))
+        || (Number(a.dataset.x || 0) - Number(b.dataset.x || 0)))
+      .forEach((win) => {
+        if (win.classList.contains('is-max')) return;
+        place(win);
+        const left = parseFloat(win.style.left);
+        const right = left + win.offsetWidth;
+        const h = win.offsetHeight;
+        let top = Number(win.dataset.y);
+        let hit = true;
+        while (hit) {
+          hit = false;
+          placed.forEach((r) => {
+            if (left < r.right + 8 && right + 8 > r.left && top < r.bottom + 8 && top + h + 8 > r.top) {
+              top = r.bottom + 12;
+              hit = true;
+            }
+          });
+        }
+        win.dataset.y = String(top);
+        win.style.top = `${top}px`;
+        placed.push({ left, right, top, bottom: top + h });
+      });
+  };
+
   const fitDesk = () => {
     if (!desk || isMobile()) return;
     let bottom = window.innerHeight - 40;
@@ -318,6 +359,7 @@
       focus(win);
       if (win.classList.contains('is-max')) toggleMax(win);
       dragging = true;
+      userMoved = true;
       win.classList.add('dragging');
       const rect = win.getBoundingClientRect();
       ox = clientX - rect.left;
@@ -355,6 +397,14 @@
     || explorerList?.querySelector('tbody');
   const explorerPath = document.getElementById('explorer-path');
   const explorerFallbackHtml = explorerTbody ? explorerTbody.innerHTML : '';
+  /* Українські описи беремо зі статичного fallback у index.html — одне джерело правди */
+  const curatedDesc = new Map(
+    [...(explorerTbody?.querySelectorAll('tr') || [])]
+      .map((tr) => [tr.cells[0]?.textContent.trim().toLowerCase(), tr.cells[2]?.textContent.trim()])
+      .filter(([name, desc]) => name && desc && desc !== '—'),
+  );
+  const REPOS_CACHE_KEY = 'rj_gh_repos_v1';
+  const REPOS_CACHE_TTL_MS = 10 * 60 * 1000;
 
   const escHtml = (s) => String(s)
     .replace(/&/g, '&amp;')
@@ -419,15 +469,37 @@
     } catch { /* ignore quota */ }
   };
 
+  const loadReposCache = () => {
+    try {
+      const data = JSON.parse(sessionStorage.getItem(REPOS_CACHE_KEY) || 'null');
+      if (!data || typeof data.ts !== 'number' || !Array.isArray(data.repos)) return null;
+      if (Date.now() - data.ts > REPOS_CACHE_TTL_MS) return null;
+      return data.repos;
+    } catch {
+      return null;
+    }
+  };
+
+  const saveReposCache = (repos) => {
+    try {
+      const slim = repos.map(({ name, html_url, language, description, pushed_at }) => ({
+        name, html_url, language, description, pushed_at,
+      }));
+      sessionStorage.setItem(REPOS_CACHE_KEY, JSON.stringify({ ts: Date.now(), repos: slim }));
+    } catch { /* ignore quota */ }
+  };
+
+  /* /releases?per_page=1 повертає [] замість 404 для репо без релізів — чиста консоль */
   const fetchLatestRelease = async (name) => {
-    const url = `https://api.github.com/repos/${GH_OWNER}/${encodeURIComponent(name)}/releases/latest`;
+    const url = `https://api.github.com/repos/${GH_OWNER}/${encodeURIComponent(name)}/releases?per_page=1`;
     try {
       const res = await fetch(url, {
         headers: { Accept: 'application/vnd.github+json' },
       });
-      if (res.status === 404) return { ok: true, release: null };
       if (!res.ok) return { ok: false, release: null };
-      const data = await res.json();
+      const list = await res.json();
+      const data = Array.isArray(list) ? list[0] : null;
+      if (!data) return { ok: true, release: null };
       const tag = data.tag_name || data.name;
       const htmlUrl = data.html_url;
       if (!tag || !htmlUrl) return { ok: true, release: null };
@@ -458,6 +530,13 @@
     return map;
   };
 
+  /* Висота Explorer змінюється після завантаження — перераховуємо розкладку */
+  const relayoutDesk = () => {
+    if (isMobile()) return;
+    arrange();
+    fitDesk();
+  };
+
   const renderExplorerRows = (repos, releases) => {
     if (!explorerTbody) return;
     if (!repos.length) {
@@ -468,7 +547,9 @@
       const name = escHtml(repo.name);
       const href = escHtml(repo.html_url || `https://github.com/${GH_OWNER}/${repo.name}`);
       const lang = escHtml(repo.language || '—');
-      const desc = escHtml((repo.description && String(repo.description).trim()) || 'публічний репозиторій');
+      const desc = escHtml(curatedDesc.get(repo.name.toLowerCase())
+        || (repo.description && String(repo.description).trim())
+        || 'публічний репозиторій');
       const rel = releases[repo.name];
       let releaseCell = '—';
       if (rel && rel.tag && rel.html_url) {
@@ -494,21 +575,25 @@
     if (!explorerTbody) return;
     showExplorerLoading();
     try {
-      const res = await fetch(GH_REPOS_URL, {
-        headers: { Accept: 'application/vnd.github+json' },
-      });
-      if (!res.ok) {
-        showExplorerFallback(res.status === 403 ? 'офлайн-список · rate limit' : 'офлайн-список');
-        return;
+      let repos = loadReposCache();
+      if (!repos) {
+        const res = await fetch(GH_REPOS_URL, {
+          headers: { Accept: 'application/vnd.github+json' },
+        });
+        if (!res.ok) {
+          showExplorerFallback(res.status === 403 ? 'офлайн-список · rate limit' : 'офлайн-список');
+          return;
+        }
+        const data = await res.json();
+        if (!Array.isArray(data)) {
+          showExplorerFallback('офлайн-список');
+          return;
+        }
+        repos = data
+          .filter(isListedRepo)
+          .sort((a, b) => String(b.pushed_at || '').localeCompare(String(a.pushed_at || '')));
+        saveReposCache(repos);
       }
-      const data = await res.json();
-      if (!Array.isArray(data)) {
-        showExplorerFallback('офлайн-список');
-        return;
-      }
-      const repos = data
-        .filter(isListedRepo)
-        .sort((a, b) => String(b.pushed_at || '').localeCompare(String(a.pushed_at || '')));
       const releases = await resolveReleases(repos);
       renderExplorerRows(repos, releases);
       const statPublic = document.getElementById('stat-public');
@@ -520,7 +605,7 @@
   };
 
   bindExplorerSelection();
-  loadExplorerFromGitHub();
+  loadExplorerFromGitHub().finally(relayoutDesk);
 
 
   const layout = () => {
@@ -542,6 +627,7 @@
       return;
     }
     visibleWindows().forEach(place);
+    arrange();
     fitDesk();
     syncTasks();
   };
@@ -578,10 +664,10 @@ Status::Public ✓`;
 ====================
 Арсенал відкритих інструментів для автоматизації та AI.
 Handle: RiasJiDar
-Forge:  github.com/RiasJ1Dar
+Forge:  github.com/RiasJ1Dar · gitlab.com/RiasJ1Dar
 Donate: send.monobank.ua/jar/4XsDm8vmF2
 
-Команди: help | ls | cat | donate | whoami | clear | neofetch`;
+Команди: help | ls | cat | links | donate | whoami | clear | neofetch`;
 
   const termOut = document.getElementById('term-out');
   const termForm = document.getElementById('term-form');
@@ -620,6 +706,7 @@ Donate: send.monobank.ua/jar/4XsDm8vmF2
   clear      — очистити екран
   ls         — список файлів
   cat FILE   — показати файл (readme.txt, signal.toml)
+  links      — GitHub і GitLab
   donate     — банка Monobank
   whoami     — хто я
   neofetch   — про систему
@@ -658,6 +745,9 @@ donate  = "monobank"`);
         }
         break;
       }
+      case 'links':
+        termPrint('GitHub: https://github.com/RiasJ1Dar\nGitLab: https://gitlab.com/RiasJ1Dar');
+        break;
       case 'donate':
         termPrint('Банка Monobank:\nhttps://send.monobank.ua/jar/4XsDm8vmF2');
         break;

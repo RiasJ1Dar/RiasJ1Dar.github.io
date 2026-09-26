@@ -193,6 +193,9 @@ a:hover{color:var(--magenta)}
 .notepad h1{margin:6px 0 8px;font-size:clamp(1.6rem,5vw,2.4rem);letter-spacing:-.02em}
 .notepad p{margin:0 0 10px;max-width:46ch}
 .path{color:#444;margin-bottom:8px!important}
+.notepad .links{word-break:break-word}
+.stat a{color:inherit}
+@media (pointer:coarse),(max-width:959px){.drag-hint{display:none}}
 
 .w95-btn,.btn-row a.w95-btn,.btn-row .w95-btn{
   display:inline-block;padding:4px 14px;margin:2px 4px 2px 0;
