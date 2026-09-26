@@ -6,8 +6,22 @@
 <title>RiasJiDar · Win95 Deck</title>
 <meta name="description" content="Портфоліо RiasJiDar: відкриті інструменти для автоматизації та AI-агентів (Rust, Python, Node.js) у ретро-інтерфейсі Windows 95.">
 <meta name="theme-color" content="#1e2a4a">
+<link rel="canonical" href="https://riasj1dar.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="uk_UA">
+<meta property="og:site_name" content="RiasJiDar">
+<meta property="og:url" content="https://riasj1dar.github.io/">
+<meta property="og:title" content="RiasJiDar · відкриті інструменти для автоматизації та AI-агентів">
+<meta property="og:description" content="Windows-застосунки, MCP та інструменти для AI-агентів, OTA-оновлення й українські локалізації. Rust, Python, C#.">
+<meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231e2a4a'/%3E%3Crect x='4' y='6' width='24' height='20' fill='%23c0c0c0' stroke='%23000'/%3E%3Crect x='4' y='6' width='24' height='4' fill='%23c45a9a'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
+<noscript><style>
+  .desktop .window{position:relative;left:auto;top:auto;margin:0 0 12px 104px;width:auto;max-width:760px}
+  .desktop .window[hidden]{display:block!important}
+  .boot,.taskbar{display:none!important}
+  @media (max-width:959px){.desktop .window{margin-left:0}}
+</style></noscript>
 </head>
 <body>
 <a class="skip" href="#desk">До столу</a>
@@ -53,11 +67,12 @@
       </div>
     </div>
     <div class="window-body notepad">
-      <p class="mono path">&gt;_ RJ.OS :: v0.5 :: тягни за title bar</p>
+      <p class="mono path">&gt;_ RJ.OS :: v0.5<span class="drag-hint"> :: тягни за title bar</span></p>
       <h1>&gt;_ СИСТЕМА ГОТОВА</h1>
       <p class="mono">:: Арсенал відкритих інструментів для автоматизації та AI.</p>
       <p>Вітаю в терміналі <strong>RiasJiDar</strong>. Тут зібрані десктопні застосунки під Windows (Rust &amp; Python): від утиліт завантаження та локалізації до агентних систем.</p>
       <p>:: Код повністю відкритий і дзеркалюється на GitLab. Якщо софт економить ваш час — підтримайте розробку гривнею.</p>
+      <p class="mono links">:: <a href="https://github.com/RiasJ1Dar" target="_blank" rel="noopener noreferrer">github.com/RiasJ1Dar</a> · <a href="https://gitlab.com/RiasJ1Dar" target="_blank" rel="noopener noreferrer">gitlab.com/RiasJ1Dar</a></p>
       <div class="btn-row">
         <button type="button" class="w95-btn" data-win="win-projects">[+] Запустити проєкти</button>
         <a class="w95-btn" href="https://send.monobank.ua/jar/4XsDm8vmF2" target="_blank" rel="noopener noreferrer">[$] Закинути в банку</a>
@@ -124,8 +139,8 @@
       </div>
     </div>
     <div class="window-body stats">
-      <div class="stat inset"><span class="mono">public</span><strong id="stat-public">16</strong><span>репозиторіїв</span></div>
-      <div class="stat inset"><span class="mono">forges</span><strong>2×</strong><span>GitHub · GitLab</span></div>
+      <div class="stat inset"><span class="mono">public</span><strong id="stat-public">13</strong><span>репозиторіїв</span></div>
+      <div class="stat inset"><span class="mono">forges</span><strong>2×</strong><span><a href="https://github.com/RiasJ1Dar" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://gitlab.com/RiasJ1Dar" target="_blank" rel="noopener noreferrer">GitLab</a></span></div>
       <div class="stat inset"><span class="mono">focus</span><strong class="pink-t">agents</strong><span>MCP · IPC · OTA</span></div>
     </div>
   </section>
@@ -141,37 +156,34 @@
     </div>
     <div class="window-body">
       <div class="toolbar">
-        <span class="w95-btn fake">File</span>
-        <span class="w95-btn fake">Edit</span>
-        <span class="w95-btn fake">View</span>
+        <span class="w95-btn fake" aria-hidden="true">File</span>
+        <span class="w95-btn fake" aria-hidden="true">Edit</span>
+        <span class="w95-btn fake" aria-hidden="true">View</span>
         <span class="mono path-bar inset" id="explorer-path">C:\RiasJiDar\Public\</span>
       </div>
       <table class="list" id="explorer-list">
         <thead><tr><th>Name</th><th>Type</th><th>Comment</th><th>Release</th></tr></thead>
         <tbody id="explorer-tbody">
           <!-- Статичний fallback, якщо GitHub API недоступний -->
-          <tr><td><a href="https://github.com/RiasJ1Dar/glm-orchestrator-public" target="_blank" rel="noopener noreferrer">glm-orchestrator</a></td><td>Node.js</td><td>MCP-оркестратор GLM-5.2 · вікно спостереження</td><td>—</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/music-extractor" target="_blank" rel="noopener noreferrer">music-extractor</a></td><td>—</td><td>—</td><td>—</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/mcp-status" target="_blank" rel="noopener noreferrer">mcp-status</a></td><td>—</td><td>—</td><td>—</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/kit-packager" target="_blank" rel="noopener noreferrer">kit-packager</a></td><td>—</td><td>—</td><td>—</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/agent-exchange" target="_blank" rel="noopener noreferrer">agent-exchange</a></td><td>Rust</td><td>MCP + SQLite пошта агентів</td><td>—</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/agent-desk" target="_blank" rel="noopener noreferrer">agent-desk</a></td><td>Python</td><td>людський перегляд NOW.md</td><td>—</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/desktop-remote-kit" target="_blank" rel="noopener noreferrer">desktop-remote-kit</a></td><td>Rust</td><td>трей · автозапуск · Telegram · update check</td><td>—</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/ota-sign" target="_blank" rel="noopener noreferrer">ota-sign</a></td><td>Rust</td><td>OTA · Ed25519 · SHA-512 блоби</td><td>—</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/asar-ua" target="_blank" rel="noopener noreferrer">asar-ua</a></td><td>Python</td><td>патчер локалі Electron asar</td><td>—</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/downloader" target="_blank" rel="noopener noreferrer">Downloader</a></td><td>Rust · C#</td><td>черга з resume · GPL-3.0</td><td>—</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/antigravity-ua" target="_blank" rel="noopener noreferrer">Antigravity UA</a></td><td>JS · C#</td><td>український UI IDE</td><td>—</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/umod-codex-gui" target="_blank" rel="noopener noreferrer">umod-codex-gui</a></td><td>Rust</td><td>Codex GUI + Entra proxy</td><td>—</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/umod-installer" target="_blank" rel="noopener noreferrer">umod-installer</a></td><td>Python</td><td>конфіг і loopback proxy</td><td>—</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/TwitchDropFarm" target="_blank" rel="noopener noreferrer">TwitchDropFarm</a></td><td>Python</td><td>Twitch Drops · Win/Linux/macOS v1.2</td><td>—</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/sweet-nethunter-kernel" target="_blank" rel="noopener noreferrer">sweet-nethunter-kernel</a></td><td>Kernel</td><td>NetHunter · GPL-2.0</td><td>—</td></tr>
-          <tr><td><a href="https://github.com/RiasJ1Dar/szi-as-ota" target="_blank" rel="noopener noreferrer">szi-as-ota</a></td><td>OTA</td><td>пайплайн оновлень</td><td>—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/agent-exchange" target="_blank" rel="noopener noreferrer">agent-exchange</a></td><td>Rust</td><td>MCP-сервер обміну між агентами: пошта, замки й спільна дошка</td><td class="no-rel">—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/antigravity-ua" target="_blank" rel="noopener noreferrer">antigravity-ua</a></td><td>JavaScript</td><td>Українська локалізація Google Antigravity 2.0 та інсталятор</td><td class="no-rel">—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/asar-ua" target="_blank" rel="noopener noreferrer">asar-ua</a></td><td>Python</td><td>Універсальний патчер локалі Electron app.asar</td><td class="no-rel">—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/TwitchDropFarm" target="_blank" rel="noopener noreferrer">TwitchDropFarm</a></td><td>Python</td><td>Майнер Twitch timed drops: один .exe, трей і Telegram-бот</td><td class="no-rel">—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/sweet-nethunter-kernel" target="_blank" rel="noopener noreferrer">sweet-nethunter-kernel</a></td><td>Shell</td><td>NetHunter-ядро для Redmi Note 10 Pro: monitor mode + injection</td><td class="no-rel">—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/desktop-remote-kit" target="_blank" rel="noopener noreferrer">desktop-remote-kit</a></td><td>Rust</td><td>Rust-блоки для трея, автозапуску, Telegram і update check</td><td class="no-rel">—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/mcp-status" target="_blank" rel="noopener noreferrer">mcp-status</a></td><td>Rust</td><td>Windows-трей: live/dead стан локальних MCP-серверів</td><td class="no-rel">—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/music-extractor" target="_blank" rel="noopener noreferrer">music-extractor</a></td><td>Python</td><td>Мінус, стеми й відновлення чистого треку з відео: RoFormer, Demucs</td><td class="no-rel">—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/downloader" target="_blank" rel="noopener noreferrer">downloader</a></td><td>Rust</td><td>Менеджер завантажень для Windows: Rust core, CLI, HLS</td><td class="no-rel">—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/kit-packager" target="_blank" rel="noopener noreferrer">kit-packager</a></td><td>Rust</td><td>cargo build → ota-sign → gh release одним CLI</td><td class="no-rel">—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/ota-sign" target="_blank" rel="noopener noreferrer">ota-sign</a></td><td>Rust</td><td>Ed25519-підписані OTA-маніфести й SHA-512 блоби</td><td class="no-rel">—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/agent-desk" target="_blank" rel="noopener noreferrer">agent-desk</a></td><td>Python</td><td>Людський HTML-перегляд NOW.md поруч з agent-exchange</td><td class="no-rel">—</td></tr>
+          <tr><td><a href="https://github.com/RiasJ1Dar/szi-as-ota" target="_blank" rel="noopener noreferrer">szi-as-ota</a></td><td>—</td><td>Зашифровані інкрементні оновлення «СЗІ в АС» без ключів у репо</td><td class="no-rel">—</td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
-  <section class="window" id="win-faq" data-x="680" data-y="396" data-w="420" data-title="FAQ.hlp" style="--z:6">
+  <section class="window" id="win-faq" data-x="860" data-y="396" data-w="400" data-order="1" data-title="FAQ.hlp" style="--z:6">
     <div class="titlebar">
       <span class="title">FAQ.hlp — Help</span>
       <div class="controls">
@@ -189,6 +201,10 @@
         <details>
           <summary>Де інші варіанти?</summary>
           <p>Попередні дизайни лишились в архіві: <a href="v1/">v1 — технічна вітрина</a> і <a href="v2/">v2 — неоновий Signal Deck</a>.</p>
+        </details>
+        <details>
+          <summary>Це всі роботи?</summary>
+          <p>Ні. Частина робіт — закриті репозиторії на замовлення, тут їх немає. Explorer показує лише публічний код.</p>
         </details>
         <details>
           <summary>Чому немає .github у списку?</summary>
@@ -236,6 +252,8 @@
       </ul>
     </details>
     <ul class="start-extras">
+      <li><a href="https://github.com/RiasJ1Dar" target="_blank" rel="noopener noreferrer"><span class="sm-ico"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#1084d0" stroke="#000"/><path d="M1 8h14M8 1c-3 3-3 11 0 14M8 1c3 3 3 11 0 14" stroke="#fff" fill="none"/></svg></span> GitHub…</a></li>
+      <li><a href="https://gitlab.com/RiasJ1Dar" target="_blank" rel="noopener noreferrer"><span class="sm-ico"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#e24329" stroke="#000"/><path d="M1 8h14M8 1c-3 3-3 11 0 14M8 1c3 3 3 11 0 14" stroke="#fff" fill="none"/></svg></span> GitLab…</a></li>
       <li><a href="https://send.monobank.ua/jar/4XsDm8vmF2" target="_blank" rel="noopener noreferrer"><span class="sm-ico"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="5" width="14" height="9" fill="#3cb043" stroke="#000"/><circle cx="8" cy="9.5" r="2.5" fill="#f2c230" stroke="#000"/><path d="M3 3h10v2H3z" fill="#2e8b36" stroke="#000"/></svg></span> Підтримати (Monobank)…</a></li>
     </ul>
     <ul class="start-extras start-power">
