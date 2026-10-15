@@ -418,7 +418,7 @@
       .map((tr) => [tr.cells[0]?.textContent.trim().toLowerCase(), tr.cells[2]?.textContent.trim()])
       .filter(([name, desc]) => name && desc && desc !== '—'),
   );
-  const REPOS_CACHE_KEY = 'rj_gh_repos_v1';
+  const REPOS_CACHE_KEY = 'rj_gh_repos_v2';
   const REPOS_CACHE_TTL_MS = 10 * 60 * 1000;
 
   const escHtml = (s) => String(s)
