@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "d44175ee-328c-4396-a6e5-a44d8e2d93a9",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "C:\\Users\\Public\\archify-20261026\\RiasJ1Dar.github.io\\.archify\\architecture-portfolio-20261026-220500\\candidate.json",
+  "output": "C:\\Users\\Public\\archify-20261026\\RiasJ1Dar.github.io\\.archify\\architecture-portfolio-20261026-220500\\portfolio.html",
+  "specification": {
+    "sha256": "4715435bcb25f72d1c723b37b0c50d5cf2550b97c1b03c1613c1aed54a83ed47",
+    "bytes": 6548
+  },
+  "artifact": {
+    "sha256": "6af23b6acb69e879d4f0406b50ca2dcea003c4de9e2c28fc4bc6aada9177e86f",
+    "bytes": 832013
+  }
+}

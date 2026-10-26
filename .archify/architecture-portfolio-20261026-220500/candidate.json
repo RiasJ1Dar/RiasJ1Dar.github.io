@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Портфоліо: робочий стіл Windows 95 на статичній сторінці",
+    "output": ".archify/architecture-portfolio-20261026-220500/portfolio.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/RiasJ1Dar/RiasJ1Dar.github.io.git",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "4286b54a666aed344180262a715422b87d703cfe"
+    }
+  },
+  "layout": {
+    "mode": "grid",
+    "origin": [40, 48],
+    "cols": 5,
+    "cellW": 125,
+    "cellH": 70,
+    "gapX": 70,
+    "gapY": 95
+  },
+  "components": [
+    {
+      "id": "visitor", "type": "external", "label": "Відвідувач", "sublabel": "браузер",
+      "row": 0, "col": 0,
+      "sources": [{ "path": "README.md", "line": 1, "label": "призначення сторінки" }]
+    },
+    {
+      "id": "pages", "type": "cloud", "label": "GitHub Pages", "sublabel": "статичний хостинг",
+      "row": 0, "col": 1,
+      "sources": [{ "path": "robots.txt", "line": 1, "label": "індексація" }]
+    },
+    {
+      "id": "shell", "type": "frontend", "label": "Робочий стіл", "sublabel": "вікна, трей, Start",
+      "row": 0, "col": 2,
+      "sources": [
+        { "path": "index.html", "line": 60, "end_line": 188, "label": "вікна сторінки" },
+        { "path": "app.js", "line": 135, "end_line": 140, "label": "початкова розкладка" }
+      ]
+    },
+    {
+      "id": "explorer", "type": "frontend", "label": "Explorer", "sublabel": "список проєктів",
+      "row": 0, "col": 3,
+      "sources": [
+        { "path": "index.html", "line": 148, "end_line": 184, "label": "вікно Explorer" },
+        { "path": "app.js", "line": 555, "end_line": 572, "label": "рядки таблиці" }
+      ]
+    },
+    {
+      "id": "api", "type": "cloud", "label": "GitHub API", "sublabel": "repos і releases",
+      "row": 0, "col": 4,
+      "sources": [
+        { "path": "app.js", "line": 402, "end_line": 406, "label": "адреси запитів" },
+        { "path": "app.js", "line": 507, "end_line": 518, "label": "репо без релізів" }
+      ]
+    },
+    {
+      "id": "terminal", "type": "frontend", "label": "Terminal", "sublabel": "команди help",
+      "row": 1, "col": 2,
+      "sources": [{ "path": "app.js", "line": 670, "label": "інтерактивний термінал" }]
+    },
+    {
+      "id": "fallback", "type": "database", "label": "статичний список", "sublabel": "одне джерело правди",
+      "row": 1, "col": 3,
+      "sources": [
+        { "path": "index.html", "line": 166, "end_line": 183, "label": "fallback-таблиця" },
+        { "path": "app.js", "line": 415, "end_line": 420, "label": "описи звідси" }
+      ]
+    },
+    {
+      "id": "cache", "type": "database", "label": "sessionStorage", "sublabel": "кеш на 10 хв",
+      "row": 1, "col": 4,
+      "sources": [
+        { "path": "app.js", "line": 421, "end_line": 423, "label": "ключ і TTL" },
+        { "path": "app.js", "line": 498, "end_line": 505, "label": "збереження зрізу" }
+      ]
+    },
+    {
+      "id": "archive", "type": "frontend", "label": "архіви v1–v3", "sublabel": "попередні дизайни",
+      "row": 2, "col": 2,
+      "sources": [
+        { "path": "v1/index.html", "line": 1, "label": "технічна вітрина" },
+        { "path": "v2/index.html", "line": 1, "label": "Signal Deck" }
+      ]
+    },
+    {
+      "id": "deeplink", "type": "messagebus", "label": "deep links", "sublabel": "#repos, #terminal",
+      "row": 2, "col": 3,
+      "sources": [{ "path": "app.js", "line": 649, "end_line": 658, "label": "hash одразу чиститься" }]
+    }
+  ],
+  "connections": [
+    { "id": "visitor-pages", "from": "visitor", "to": "pages", "label": "HTTPS", "variant": "emphasis" },
+    { "id": "pages-shell", "from": "pages", "to": "shell", "label": "сторінка", "variant": "emphasis" },
+    { "id": "shell-explorer", "from": "shell", "to": "explorer", "label": "вікно", "variant": "emphasis" },
+    { "id": "explorer-api", "from": "explorer", "to": "api", "label": "fetch", "variant": "emphasis" },
+    { "id": "api-cache", "from": "api", "to": "cache", "label": "зріз", "fromSide": "bottom", "toSide": "top" },
+    { "id": "fallback-explorer", "from": "fallback", "to": "explorer", "label": "описи", "fromSide": "top", "toSide": "bottom" },
+    { "id": "shell-terminal", "from": "shell", "to": "terminal", "label": "вікно", "fromSide": "bottom", "toSide": "top" },
+    { "id": "deeplink-shell", "from": "deeplink", "to": "shell", "label": "відкриває" },
+    { "id": "shell-archive", "from": "shell", "to": "archive", "label": "посилання", "variant": "dashed" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Живий список проєктів",
+      "items": [
+        "Explorer тягне публічні репозиторії з GitHub API під час відкриття",
+        "Форки, архівні репо, сам сайт, профільний README і .github у список не входять",
+        "Якщо API недоступний, лишається статична таблиця з index.html"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Одне джерело правди для описів",
+      "items": [
+        "Українські описи беруться зі статичної таблиці, а не з опису репозиторію",
+        "Релізи дотягуються окремо, не більше ніж для 20 репозиторіїв",
+        "Запит /releases?per_page=1 повертає порожній масив замість 404, тож консоль чиста"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Без бекенда",
+      "items": [
+        "Лише index.html, app.js і style.css на GitHub Pages: ні сервера, ні збірки",
+        "Кеш у sessionStorage живе 10 хвилин і зникає із закриттям вкладки",
+        "Deep links відкривають вікно один раз і одразу прибирають hash",
+        "Попередні дизайни лишились в архіві v1–v3"
+      ]
+    }
+  ]
+}
